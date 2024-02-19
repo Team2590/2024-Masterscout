@@ -1,5 +1,5 @@
 'use client'
-import { twentyFourFetcher } from '@/app/twentyFourFetcher'
+import { twentyFourFetcher } from '@/app/fetchers'
 import { Button, Box, CircularProgress } from '@mui/material'
 import { useQueryState } from 'nuqs'
 import React, { useEffect, useMemo } from 'react'
@@ -22,10 +22,6 @@ export default function Page() {
     }
 
     const { isLoading, data, error } = useSWR('https://jsonplaceholder.typicode.com/posts', twentyFourFetcher)
-
-    useEffect(() => {
-        console.log(data)
-    }, [data])
 
     useEffect(() => {
         sessionStorage.setItem('compare-teams', JSON.stringify(teams))

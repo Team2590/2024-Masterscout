@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function Loading() {
     return (
-        <div style={{ height: '100vh', width: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <CircularProgress />
         </div>
     )

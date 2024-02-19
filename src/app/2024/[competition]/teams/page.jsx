@@ -3,11 +3,13 @@ import { Autocomplete, Container, TextField, Snackbar, IconButton, InputAdornmen
 import CloseIcon from '@mui/icons-material/Close';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import Loading from '@/app/loading';
 
 export default function Page() {
     const router = useRouter()
     const [error, setError] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const options = [
         { label: '2590', id: 1 },
@@ -16,11 +18,13 @@ export default function Page() {
     ]
 
     const handleSubmit = (e, value) => {
-        console.log(value)
+        setLoading(true)
+        console.log(options.some(option => option.label == value))
         if (options.some(option => option.label == value)) {
             router.push(`./teams/${value}`)
         } else {
             setError(true)
+            setLoading(false)
         }
     }
 
@@ -36,7 +40,7 @@ export default function Page() {
                 renderInput={(params) =>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Search sx={{ color: 'action.active', mr: 1, mt: 2 }} />
-                        <TextField {...params} label="Team" variant='standard' />
+                        <TextField {...params} label="Team" variant='standard' onSubmit={handleSubmit} />
                     </Box>
                 }
             />
@@ -56,6 +60,7 @@ export default function Page() {
                     </IconButton>
                 }
             />
+            {loading && <Loading />}
         </Container>
     )
 }

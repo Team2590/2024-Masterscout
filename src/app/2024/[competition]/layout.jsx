@@ -5,6 +5,7 @@ import { red } from '@mui/material/colors'
 import Link from 'next/link'
 import React, { Suspense, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
+import Loading from '@/app/loading';
 
 export default function Layout({ children, params }) {
     const router = useRouter()
@@ -59,7 +60,7 @@ export default function Layout({ children, params }) {
                 </Box>
             </Drawer >
             <Box>
-                <Suspense fallback={<CircularProgress />}>
+                <Suspense fallback={<Loading />}>
                     {children}
                 </Suspense>
             </Box>

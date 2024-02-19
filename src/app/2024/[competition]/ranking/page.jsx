@@ -82,18 +82,11 @@ export default function Page({ params }) {
         let teams = []
         if (selectionNums && selectionNums.length > 0) {
             selectionNums.forEach(rowNum => {
-                console.log(rows[rowNum - 1].lastName)
                 teams.push(rows[rowNum - 1].lastName)
             })
         }
         return teams
     }, [selectionNums])
-
-    // useEffect(() => {
-    //     console.log(selectionNums)
-    //     console.log(buttonDisabled)
-    //     console.log(selectedTeams)
-    // }, [selectionNums])
 
     return (
         <Suspense fallback={<CircularProgress />}>
