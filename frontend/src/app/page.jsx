@@ -5,28 +5,22 @@ import useSWR from "swr";
 import { fetcher } from "../util/fetchers";
 import { combine } from "@/util/combine";
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function Home() {
-    // const { isLoading, data, error } = useSWR(`${process.env.API_URL_2024}/api/compo`, fetcher)
+    const { isLoading, data, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/comp`, fetcher)
 
-    const myObjArr = [{ a: 1, b: 'string 1' }, { a: 2, b: 'string 2' }]
-    const thing = combine.objPropNums(myObjArr, 'a')
-    const thing2 = combine.objPropStrings(myObjArr, 'b')
-
-    useEffect(() => {
-        console.log(thing2)
-    }, [])
-
-    return (
-        // <Stack>
-        //     {data.map(info => {
-        //         return (
-        //             <div>
-        //                 <p>idk</p>
-        //             </div>
-        //         )
-        //     })}
-        // </Stack>
-        <p>fuck</p>
-    )
+    if (data) {
+        return (
+            <Stack>
+                {data.map(({ Tables_in_Nemesis2590 }) => {
+                    return (
+                        <div>
+                            <Link href={`/2024/${Tables_in_Nemesis2590}`}>{Tables_in_Nemesis2590}</Link>
+                        </div>
+                    )
+                })}
+            </Stack>
+        )
+    }
 }

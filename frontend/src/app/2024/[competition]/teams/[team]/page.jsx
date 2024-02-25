@@ -2,7 +2,6 @@
 import { combine } from '@/util/combine'
 import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
-import { teamUtil2024 } from '@/util/teamUtil2024'
 import { Box, Grid, Stack, Item, TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody } from '@mui/material'
 import React, { useMemo } from 'react'
 import useSWR from 'swr'

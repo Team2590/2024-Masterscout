@@ -48,10 +48,6 @@ export default function Page({ params }) {
     const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/raw`, fetcher)
     const [selectionNums, setSelectionNums] = useState()
     const router = useRouter()
-    const rows = [
-        { id: 1, matchNum: 1, teamNum: 2590 },
-        { id: 2, matchNum: 1, teamNum: 1712 }
-    ]
 
     const compareRedirect = () => {
         router.push(`./compare?teams=${JSON.stringify(selectedTeams)}`)
@@ -69,12 +65,16 @@ export default function Page({ params }) {
     const selectedTeams = useMemo(() => {
         let teams = []
         if (selectionNums && selectionNums.length > 0) {
-            selectionNums.forEach(rowNum => {
-                console.log(rowNum)
+            selectionNums.forEach(index => {
+                teams.push(data[index - 1].teamNum)
             })
         }
         return teams
     }, [selectionNums])
+
+    useEffect(() => {
+        console.log(selectedTeams)
+    }, [selectedTeams])
 
     if (data) {
         return (
