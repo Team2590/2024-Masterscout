@@ -1,11 +1,12 @@
 'use client'
 import { fetcher } from '@/util/fetchers'
 import { Button, Box, CircularProgress } from '@mui/material'
+import { notFound } from 'next/navigation'
 import { useQueryState } from 'nuqs'
 import React, { useEffect, useMemo } from 'react'
 import useSWR from 'swr'
 
-export default function Page() {
+export default function Page({ params }) {
     const [teams, setTeams] = useQueryState('teams', {
         parse: (team) => JSON.parse(team),
         serialize: (value) => JSON.stringify(value)
@@ -47,8 +48,6 @@ export default function Page() {
             </>
         )
     } else {
-        return (
-            <p>Fuck</p>
-        )
+        return notFound()
     }
 }

@@ -1,13 +1,9 @@
 export const combine = {
-    objNums: (arr, prop) => {
-        let total = 0
-        arr.forEach(obj => {
-            total += obj[prop]
-        })
-        return total
+    objPropNums: (arr, prop) => {
+        return arr.reduce((total, obj) => { return total + obj[prop] })
     },
 
-    objStrings: (arr, prop) => {
+    objPropStrings: (arr, prop) => {
         let total = []
         arr.forEach(obj => {
             total.push(obj[prop])
@@ -15,7 +11,9 @@ export const combine = {
         return total
     },
 
-    objByProp: (arr, prop) => {
-        return
+    objPropNumsToArr: (arr, prop) => {
+        return arr.map(obj => {
+            return obj[prop]
+        })
     }
 }
