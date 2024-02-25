@@ -3,30 +3,36 @@ import { Autocomplete, Container, TextField, Snackbar, IconButton, InputAdornmen
 import CloseIcon from '@mui/icons-material/Close';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Loading from '@/app/loading';
+import useSWR from 'swr';
+import { fetcher } from '@/util/fetchers';
 
-export default function Page() {
+export default function Page({ params }) {
     const router = useRouter()
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [options, setOptions] = useState([]);
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
 
-    const options = [
-        { label: '2590', id: 1 },
-        { label: '1712', id: 2 },
-        { label: '1492', id: 3 },
-    ]
+    useEffect(() => {
+        if (data) {
+            setOptions(data.map(({ teamNum }) => {
+                const id = data.findIndex(a => a.teamNum == teamNum)
+                return { label: teamNum.toString(), id }
+            }))
+        }
+    }, [data])
 
-    const handleSubmit = (e, value) => {
+    const handleSubmit = useCallback((e, value) => {
         setLoading(true)
-        console.log(options.some(option => option.label == value))
-        if (options.some(option => option.label == value)) {
-            router.push(`./teams/${value}`)
+        if (options.some(({ label }) => label == value.label)) {
+            router.push(`./teams/${value.label}`)
         } else {
             setError(true)
             setLoading(false)
         }
-    }
+    }, [options])
 
     return (
         <Container>

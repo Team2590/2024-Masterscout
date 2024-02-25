@@ -10,8 +10,8 @@ export default function Home() {
     // const { isLoading, data, error } = useSWR(`${process.env.API_URL_2024}/api/compo`, fetcher)
 
     const myObjArr = [{ a: 1, b: 'string 1' }, { a: 2, b: 'string 2' }]
-    const thing = combine.objNums(myObjArr, 'a')
-    const thing2 = combine.objStrings(myObjArr, 'b')
+    const thing = combine.objPropNums(myObjArr, 'a')
+    const thing2 = combine.objPropStrings(myObjArr, 'b')
 
     useEffect(() => {
         console.log(thing2)

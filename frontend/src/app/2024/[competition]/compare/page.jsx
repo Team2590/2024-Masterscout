@@ -22,7 +22,7 @@ export default function Page({ params }) {
         })
     }
 
-    const { isLoading, data } = useSWR(`${process.env.API_URL_2024}/${params.competition}/all/raw`, fetcher)
+    const { isLoading, data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/${params.competition}/all/raw`, fetcher)
 
     useEffect(() => {
         sessionStorage.setItem('compare-teams', JSON.stringify(teams))
@@ -48,6 +48,8 @@ export default function Page({ params }) {
             </>
         )
     } else {
-        return notFound()
+        return (
+            <p>Error</p>
+        )
     }
 }

@@ -22,6 +22,8 @@ import Loading from '@/app/loading';
 import { createColumn } from '@/util/createColumn';
 
 const columns = [
+    createColumn('id', 'id', 60),
+    createColumn('teamNum', 'Team Number', 80),
     createColumn('matchNum', 'Match Number', 120),
     createColumn('startingPos', 'Starting Position', 150),
     createColumn('leaveWing', 'Leave Wing'),
@@ -43,12 +45,12 @@ const columns = [
 ]
 
 export default function Page({ params }) {
-    const { data, isLoading, error } = useSWR(`${process.env.API_URL_2024}/${params.competition}/all/raw`, fetcher)
+    const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/raw`, fetcher)
     const [selectionNums, setSelectionNums] = useState()
     const router = useRouter()
     const rows = [
-        { id: 1, matchNum: 1 },
-        { id: 2, matchNum: 1 }
+        { id: 1, matchNum: 1, teamNum: 2590 },
+        { id: 2, matchNum: 1, teamNum: 1712 }
     ]
 
     const compareRedirect = () => {
@@ -68,55 +70,11 @@ export default function Page({ params }) {
         let teams = []
         if (selectionNums && selectionNums.length > 0) {
             selectionNums.forEach(rowNum => {
-                teams.push(rows[rowNum - 1].teamNum)
+                console.log(rowNum)
             })
         }
         return teams
     }, [selectionNums])
-
-    return (
-        <Suspense fallback={<CircularProgress />}>
-            <Box sx={{ height: '100%', width: '100%', '.MuiDataGrid-root': { border: 'none !important' }, '.MuiDataGrid-columnHeaderTitle': { textAlign: 'center !important' } }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 9,
-                            },
-                        },
-                    }}
-                    pageSizeOptions={[5]}
-                    onRowSelectionModelChange={(idk) => {
-                        setSelectionNums(idk)
-                    }}
-                    checkboxSelection
-                    disableRowSelectionOnClick
-                    slots={{
-                        toolbar: () => {
-                            return (
-                                <GridToolbarContainer>
-                                    <GridToolbarContainer>
-                                        <GridToolbarColumnsButton />
-                                        <GridToolbarFilterButton />
-                                        <GridToolbarDensitySelector />
-                                        <GridToolbarExport />
-                                        <Button
-                                            // variant='contained'
-                                            disabled={buttonDisabled}
-                                            onClick={compareRedirect}>
-                                            Compare
-                                        </Button>
-                                    </GridToolbarContainer>
-                                </GridToolbarContainer>
-                            )
-                        }
-                    }}
-                />
-            </Box>
-        </Suspense>
-    )
 
     if (data) {
         return (
@@ -165,6 +123,8 @@ export default function Page({ params }) {
     } else if (isLoading) {
         return <Loading />
     } else {
-        return notFound()
+        return (
+            <p>Error</p>
+        )
     }
 }

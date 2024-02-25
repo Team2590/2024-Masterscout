@@ -1,15 +1,17 @@
 const express = require('express');
 const mysql = require('mysql2');
+const cors = require('cors')
 /**
  * Credentials are prob changed because db is now hosted on AWS
  */
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'AayanFazal2007',
-  database: 'ScoutSchema'
+  host: 'nemesis2590-database.cxakssa62a0n.us-east-2.rds.amazonaws.com',
+  user: 'Nemesis',
+  password: 'Nemesis2590!',
+  database: 'Nemesis2590'
 });
 const app = express();
+app.use(cors())
 // Connect to the database
 connection.connect((err) => {
   if (err) {

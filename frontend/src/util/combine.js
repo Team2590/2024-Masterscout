@@ -1,6 +1,6 @@
 export const combine = {
     objPropNums: (arr, prop) => {
-        return arr.reduce((total, obj) => { return total + obj[prop] })
+        return arr.reduce((total, obj) => { return total + obj[prop] }, 0)
     },
 
     objPropStrings: (arr, prop) => {

@@ -1,12 +1,20 @@
 import { combine } from "./combine"
 
-export const teamUtil = {
+export const teamUtil2024 = {
     getAvgAmpAtn: (data) => {
         return combine.objPropNums(data, 'ampMade_atn') / data.length
     },
 
     getAvgSpeakerAtn: (data) => {
+        return combine.objPropNums(data, 'spkrMade_atn') / data.length
+    },
+
+    getAvgAmpTp: (data) => {
         return combine.objPropNums(data, 'ampMade_tp') / data.length
+    },
+
+    getAvgSpeakerTp: (data) => {
+        return combine.objPropNums(data, 'spkrMade_tp') / data.length
     },
 
     getAvgTrap: (data) => {
@@ -35,12 +43,26 @@ export const teamUtil = {
 
     getAccuracyAmpAtn: function (data) {
         const missed = combine.objPropNums(data, 'ampMissed_atn')
-        return this.getTotalAmpAtn(data) / missed
+        const scored = this.getTotalAmpAtn(data)
+        return scored / (scored + missed)
     },
 
     getAccuracySpeakerAtn: function (data) {
         const missed = combine.objPropNums(data, 'spkrMissed_atn')
-        return this.getTotalSpeakerAtn(data) / missed
+        const scored = this.getTotalSpeakerAtn(data)
+        return scored / (scored + missed)
+    },
+
+    getAccuracyAmpTp: function (data) {
+        const missed = combine.objPropNums(data, 'ampMissed_tp')
+        const scored = this.getTotalAmpTp(data)
+        return scored / (scored + missed)
+    },
+
+    getAccuracySpeakerTp: function (data) {
+        const missed = combine.objPropNums(data, 'spkrMissed_tp')
+        const scored = this.getTotalSpeakerTp(data)
+        return scored / (scored + missed)
     },
 
     getMinAmpAtn: (data) => {
