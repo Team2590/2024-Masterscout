@@ -1,5 +1,5 @@
 'use client'
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
     DataGrid,
@@ -50,7 +50,7 @@ export default function Page({ params }) {
     const router = useRouter()
 
     const compareRedirect = () => {
-        router.push(`./compare?teams=${JSON.stringify(selectedTeams)}`)
+        router.push(`./compare/${selectedTeams.join('/')}`)
         sessionStorage.setItem("compare-teams", JSON.stringify(selectedTeams))
     }
 
@@ -74,6 +74,7 @@ export default function Page({ params }) {
 
     useEffect(() => {
         console.log(selectedTeams)
+        console.log(selectedTeams.join('/'))
     }, [selectedTeams])
 
     if (data) {

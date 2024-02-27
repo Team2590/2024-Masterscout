@@ -1,5 +1,5 @@
 'use client'
-import { Autocomplete, Container, TextField, Snackbar, IconButton, InputAdornment, Box } from '@mui/material'
+import { Autocomplete, Container, TextField, Snackbar, IconButton, Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
