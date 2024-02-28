@@ -1,7 +1,7 @@
 'use client'
 import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
-import { TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody } from '@mui/material'
+import { TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody, TableRow } from '@mui/material'
 import React, { useMemo } from 'react'
 import useSWR from 'swr'
 
@@ -28,32 +28,36 @@ export default function Page({ params }) {
                     <TableContainer sx={{ maxWidth: 1200, marginInline: 'auto' }} component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableCell align='center'>Min Auto</TableCell>
-                                <TableCell align='center'>Min Auto Greater Than 0</TableCell>
-                                <TableCell align='center'>Min Teleop</TableCell>
-                                <TableCell align='center'>Min Teleop Greater Than 0</TableCell>
-                                <TableCell align='center'>Average Auto</TableCell>
-                                <TableCell align='center'>Average Teleop</TableCell>
-                                <TableCell align='center'>Total Auto</TableCell>
-                                <TableCell align='center'>Total Teleop</TableCell>
-                                <TableCell align='center'>Scored Last Match Auto</TableCell>
-                                <TableCell align='center'>Scored Last Match Teleop</TableCell>
-                                <TableCell align='center'>Accuracy Auto</TableCell>
-                                <TableCell align='center'>Accuracy Teleop</TableCell>
+                                <TableRow>
+                                    <TableCell align='center'>Min Auto</TableCell>
+                                    <TableCell align='center'>Min Auto Greater Than 0</TableCell>
+                                    <TableCell align='center'>Min Teleop</TableCell>
+                                    <TableCell align='center'>Min Teleop Greater Than 0</TableCell>
+                                    <TableCell align='center'>Average Auto</TableCell>
+                                    <TableCell align='center'>Average Teleop</TableCell>
+                                    <TableCell align='center'>Total Auto</TableCell>
+                                    <TableCell align='center'>Total Teleop</TableCell>
+                                    <TableCell align='center'>Scored Last Match Auto</TableCell>
+                                    <TableCell align='center'>Scored Last Match Teleop</TableCell>
+                                    <TableCell align='center'>Accuracy Auto</TableCell>
+                                    <TableCell align='center'>Accuracy Teleop</TableCell>
+                                </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableCell align='center'>{teamData.getMinAmpAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinAmpAtnGtr0()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinAmpTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinAmpTpGtr0()}</TableCell>
-                                <TableCell align='center'>{teamData.getAvgAmpAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getAvgAmpTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getTotalAmpAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getTotalAmpTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getLastAmpAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getLastAmpTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getAccuracyAmpAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getAccuracyAmpTp()}</TableCell>
+                                <TableRow>
+                                    <TableCell align='center'>{teamData.getMinAmpAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinAmpAtnGtr0()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinAmpTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinAmpTpGtr0()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAvgAmpAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAvgAmpTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getTotalAmpAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getTotalAmpTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getLastAmpAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getLastAmpTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAccuracyAmpAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAccuracyAmpTp()}</TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -63,32 +67,36 @@ export default function Page({ params }) {
                     <TableContainer sx={{ maxWidth: 1200, marginInline: 'auto' }} component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableCell align='center'>Min Auto</TableCell>
-                                <TableCell align='center'>Min Auto Greater Than 0</TableCell>
-                                <TableCell align='center'>Min Teleop</TableCell>
-                                <TableCell align='center'>Min Teleop Greater Than 0</TableCell>
-                                <TableCell align='center'>Average Auto</TableCell>
-                                <TableCell align='center'>Average Teleop</TableCell>
-                                <TableCell align='center'>Total Auto</TableCell>
-                                <TableCell align='center'>Total Teleop</TableCell>
-                                <TableCell align='center'>Scored Last Match Auto</TableCell>
-                                <TableCell align='center'>Scored Last Match Teleop</TableCell>
-                                <TableCell align='center'>Accuracy Auto</TableCell>
-                                <TableCell align='center'>Accuracy Teleop</TableCell>
+                                <TableRow>
+                                    <TableCell align='center'>Min Auto</TableCell>
+                                    <TableCell align='center'>Min Auto Greater Than 0</TableCell>
+                                    <TableCell align='center'>Min Teleop</TableCell>
+                                    <TableCell align='center'>Min Teleop Greater Than 0</TableCell>
+                                    <TableCell align='center'>Average Auto</TableCell>
+                                    <TableCell align='center'>Average Teleop</TableCell>
+                                    <TableCell align='center'>Total Auto</TableCell>
+                                    <TableCell align='center'>Total Teleop</TableCell>
+                                    <TableCell align='center'>Scored Last Match Auto</TableCell>
+                                    <TableCell align='center'>Scored Last Match Teleop</TableCell>
+                                    <TableCell align='center'>Accuracy Auto</TableCell>
+                                    <TableCell align='center'>Accuracy Teleop</TableCell>
+                                </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableCell align='center'>{teamData.getMinSpeakerAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinSpeakerAtnGtr0()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinSpeakerTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinSpeakerTpGtr0()}</TableCell>
-                                <TableCell align='center'>{teamData.getAvgSpeakerAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getAvgSpeakerTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getTotalSpeakerAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getTotalSpeakerTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getLastSpeakerAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getLastSpeakerTp()}</TableCell>
-                                <TableCell align='center'>{teamData.getAccuracySpeakerAtn()}</TableCell>
-                                <TableCell align='center'>{teamData.getAccuracySpeakerTp()}</TableCell>
+                                <TableRow>
+                                    <TableCell align='center'>{teamData.getMinSpeakerAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinSpeakerAtnGtr0()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinSpeakerTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinSpeakerTpGtr0()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAvgSpeakerAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAvgSpeakerTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getTotalSpeakerAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getTotalSpeakerTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getLastSpeakerAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getLastSpeakerTp()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAccuracySpeakerAtn()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAccuracySpeakerTp()}</TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -98,18 +106,22 @@ export default function Page({ params }) {
                     <TableContainer sx={{ maxWidth: 800, marginInline: 'auto' }} component={Paper}>
                         <Table>
                             <TableHead>
-                                <TableCell align='center'>Min</TableCell>
-                                <TableCell align='center'>Min Greater Than 0</TableCell>
-                                <TableCell align='center'>Average</TableCell>
-                                <TableCell align='center'>Total</TableCell>
-                                <TableCell align='center'>Scored Last Match</TableCell>
+                                <TableRow>
+                                    <TableCell align='center'>Min</TableCell>
+                                    <TableCell align='center'>Min Greater Than 0</TableCell>
+                                    <TableCell align='center'>Average</TableCell>
+                                    <TableCell align='center'>Total</TableCell>
+                                    <TableCell align='center'>Scored Last Match</TableCell>
+                                </TableRow>
                             </TableHead>
                             <TableBody>
-                                <TableCell align='center'>{teamData.getMinTrap()}</TableCell>
-                                <TableCell align='center'>{teamData.getMinTrapGtr0()}</TableCell>
-                                <TableCell align='center'>{teamData.getAvgTrap()}</TableCell>
-                                <TableCell align='center'>{teamData.getTotalTrap()}</TableCell>
-                                <TableCell align='center'>{teamData.getLastTrap()}</TableCell>
+                                <TableRow>
+                                    <TableCell align='center'>{teamData.getMinTrap()}</TableCell>
+                                    <TableCell align='center'>{teamData.getMinTrapGtr0()}</TableCell>
+                                    <TableCell align='center'>{teamData.getAvgTrap()}</TableCell>
+                                    <TableCell align='center'>{teamData.getTotalTrap()}</TableCell>
+                                    <TableCell align='center'>{teamData.getLastTrap()}</TableCell>
+                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>

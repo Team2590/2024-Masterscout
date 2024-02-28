@@ -19,7 +19,10 @@ import Link from 'next/link';
 import useSWR from 'swr';
 import { fetcher } from '@/util/fetchers';
 import Loading from '@/app/loading';
-import { createColumn } from '@/util/createColumn';
+
+const createColumn = (field, headerName, width) => {
+    return { field, headerName, width }
+}
 
 const columns = [
     createColumn('id', 'id', 60),
@@ -69,13 +72,8 @@ export default function Page({ params }) {
                 teams.push(data[index - 1].teamNum)
             })
         }
-        return teams
+        return Array.from(new Set(teams))
     }, [selectionNums])
-
-    useEffect(() => {
-        console.log(selectedTeams)
-        console.log(selectedTeams.join('/'))
-    }, [selectedTeams])
 
     if (data) {
         return (

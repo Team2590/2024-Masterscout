@@ -11,11 +11,11 @@ const getTeamData = async (params) => {
 }
 
 export default async function Page({ params }) {
-    const data = await getTeamData(params)
+    const teamsData = await getTeamData(params)
 
     return (
         <>
-            <TruePage {...data} />
+            <TruePage teamsData={teamsData} />
         </>
     )
 }

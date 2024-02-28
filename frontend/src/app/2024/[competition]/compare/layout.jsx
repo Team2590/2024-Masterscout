@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import useSWR from 'swr'
 
-export default function Layout() {
+export default function Layout({ children }) {
     const params = useParams()
     const router = useRouter()
     const teamData = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
@@ -46,6 +46,7 @@ export default function Layout() {
                         </Box>
                     }
                 />
+                {children}
             </>
         )
     } else {
