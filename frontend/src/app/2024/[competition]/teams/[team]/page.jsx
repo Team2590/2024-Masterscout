@@ -10,7 +10,6 @@ export default function Page({ params }) {
 
     if (data) {
         const teamData = new TeamDataUtil2024(data)
-        console.log(data)
         return (
             <>
                 <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
