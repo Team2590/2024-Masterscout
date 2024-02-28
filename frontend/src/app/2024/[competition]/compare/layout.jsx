@@ -2,30 +2,18 @@
 import { fetcher } from '@/util/fetchers'
 import { Search } from '@mui/icons-material'
 import { Box, CircularProgress, Autocomplete, TextField } from '@mui/material'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import useSWR from 'swr'
 
-export default function Layout({ params }) {
-
+export default function Layout() {
+    const params = useParams()
+    const router = useRouter()
     const teamData = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
-
-    useEffect(() => {
-        sessionStorage.setItem('compare-teams', JSON.stringify(teams))
-    }, [teams])
 
     const handleSubmit = (e, value) => {
         e.preventDefault()
-        setTeams(prevTeams => {
-            if (prevTeams) {
-                return [...prevTeams, 123]
-            } else {
-                return [123]
-            }
-        })
-    }
-
-    const dataToTeamsArr = (data) => {
-        return Array.from(new Set(data.map(d => { return d.teamNum })))
+        router.push(`/2024/${params.competition}/compare/${value.join('/')}`)
     }
 
     if (teamData.isLoading) {
@@ -35,21 +23,22 @@ export default function Layout({ params }) {
             </div>
         )
     } else if (teamData.data) {
-        const options = teamData.data.map(({ teamNum }) => {
-            const id = teamData.data.findIndex(a => a.teamNum == teamNum)
-            return { label: teamNum.toString(), id }
-        })
+        const options = Array.from(new Set(teamData.data.map(({ teamNum }) => {
+            // const id = teamData.data.findIndex(a => a.teamNum == teamNum)
+            // return { label: teamNum.toString(), id }
+            return teamNum
+        })))
+        const defaultValue = Array.from(new Set(params.teams))
         return (
             <>
                 <Autocomplete
                     multiple
                     disablePortal
-                    freeSolo
                     id="combo-box-demo"
                     options={options}
                     sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
                     onChange={handleSubmit}
-                    defaultValue={teams}
+                    defaultValue={defaultValue}
                     renderInput={(params) =>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Search sx={{ color: 'action.active', mr: 1, mt: 2 }} />

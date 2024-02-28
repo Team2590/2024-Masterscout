@@ -22,7 +22,7 @@ export default function Page({ params }) {
                         margin: 'auto'
                     }} /> */}
                 </div>
-                <Divider style={{ maxWidth: '90vw', marginInline: 'auto' }} />
+                {/* <Divider style={{ maxWidth: '90vw', marginInline: 'auto' }} /> */}
                 <div style={{ marginInline: 'auto' }}>
                     <h2 style={{ textAlign: 'center' }}>Amp</h2>
                     <TableContainer sx={{ maxWidth: 1200, marginInline: 'auto' }} component={Paper}>
@@ -93,7 +93,7 @@ export default function Page({ params }) {
                         </Table>
                     </TableContainer>
                 </div>
-                <div style={{ marginInline: 'auto', marginTop: '4rem' }}>
+                <div style={{ marginInline: 'auto', marginTop: '4rem', paddingBottom: '2rem' }}>
                     <h2 style={{ textAlign: 'center' }}>Trap</h2>
                     <TableContainer sx={{ maxWidth: 800, marginInline: 'auto' }} component={Paper}>
                         <Table>

@@ -13,7 +13,7 @@ export default function TrueLayout({ children, params }) {
     const [drawerState, setDrawerState] = useState(false)
 
     const redirects = {
-        compare: () => router.push(`/2024/${params.competition}/compare?teams=${sessionStorage.getItem('compare-teams')}`),
+        compare: () => router.push(`/2024/${params.competition}/compare`),
         ranking: () => router.push(`/2024/${params.competition}/ranking`),
         teams: () => router.push(`/2024/${params.competition}/teams`)
     }

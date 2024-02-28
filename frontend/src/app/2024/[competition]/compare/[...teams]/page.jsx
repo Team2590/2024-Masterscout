@@ -1,9 +1,21 @@
 import React from 'react'
+import TruePage from './truePage'
 
-export default function Page() {
+const getTeamData = async (params) => {
+    const teams = Array.from(new Set(params.teams))
+    const teamsData = await Promise.all(teams.map(async (team) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${team}`)
+        return response.json()
+    }))
+    return teamsData
+}
+
+export default async function Page({ params }) {
+    const data = await getTeamData(params)
+
     return (
         <>
-            <TruePage dat></TruePage>
+            <TruePage {...data} />
         </>
     )
 }
