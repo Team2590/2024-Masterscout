@@ -112,7 +112,6 @@ export default function TruePage({ data }) {
                         </Button>
                         <Button
                             aria-label='compare'
-                            sx={{ marginTop: '2px' }}
                             variant='contained'
                             disabled={isComparedDisabled}
                             color='inherit'
