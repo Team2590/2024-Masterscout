@@ -3,13 +3,12 @@ import { AppBar, Box, Drawer, IconButton, List, ListItemButton, Toolbar, Tooltip
 import MenuIcon from '@mui/icons-material/Menu';
 import { red } from '@mui/material/colors'
 import Link from 'next/link'
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Loading from '@/app/loading';
 
 export default function TrueLayout({ children, params }) {
     const router = useRouter()
-    const autoCompleteData = ['something', 'somethingelse']
     const [drawerState, setDrawerState] = useState(false)
 
     const redirects = {

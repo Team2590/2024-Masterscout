@@ -3,7 +3,7 @@ import { Autocomplete, Container, TextField, Snackbar, IconButton, Box } from '@
 import CloseIcon from '@mui/icons-material/Close';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loading from '@/app/loading';
 import useSWR from 'swr';
 import { fetcher } from '@/util/fetchers';
@@ -24,7 +24,7 @@ export default function Page({ params }) {
         }
     }, [data])
 
-    const handleSubmit = useCallback((e, value) => {
+    const handleSubmit = (e, value) => {
         setLoading(true)
         if (options.some(({ label }) => label == value.label)) {
             router.push(`./teams/${value.label}`)
@@ -32,7 +32,7 @@ export default function Page({ params }) {
             setError(true)
             setLoading(false)
         }
-    }, [options])
+    }
 
     return (
         <Container>

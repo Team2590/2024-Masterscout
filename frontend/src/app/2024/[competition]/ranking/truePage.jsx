@@ -1,11 +1,9 @@
 'use client'
 import { Button, IconButton, Tooltip } from '@mui/material'
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import CompareIcon from '@mui/icons-material/Compare';
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { red } from '@mui/material/colors';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 
 const createColumn = (accessorKey, header, size, extra) => {
@@ -101,7 +99,7 @@ export default function TruePage({ data }) {
         renderBottomToolbarCustomActions: ({ table }) => {
             return (
                 <div>
-                    <Tooltip title='Compare'>
+                    <Tooltip title='Download CSV'>
                         <Button
                             onClick={() => handleExportData(table.getSelectedRowModel().rows)}
                             color='inherit'
@@ -110,6 +108,8 @@ export default function TruePage({ data }) {
                         >
                             Download CSV
                         </Button>
+                    </Tooltip>
+                    <Tooltip title='Compare'>
                         <Button
                             aria-label='compare'
                             variant='contained'

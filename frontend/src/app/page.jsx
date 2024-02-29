@@ -15,8 +15,13 @@ export default function Home() {
                     <h1>Competitions</h1>
                     {data.map(({ Tables_in_Nemesis2590 }) => {
                         return (
-                            <div>
-                                <Link href={`/2024/${Tables_in_Nemesis2590}`} style={{ textDecoration: 'none', color: 'inherit', fontSize: '1.75rem' }}>{Tables_in_Nemesis2590}</Link>
+                            <div key={crypto.randomUUID}>
+                                <Link
+                                    href={`/2024/${Tables_in_Nemesis2590}`}
+                                    style={{ textDecoration: 'none', color: 'inherit', fontSize: '1.75rem' }}
+                                >
+                                    {Tables_in_Nemesis2590}
+                                </Link>
                             </div>
                         )
                     })}

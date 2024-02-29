@@ -3,7 +3,7 @@ import { fetcher } from '@/util/fetchers'
 import { Search } from '@mui/icons-material'
 import { Box, CircularProgress, Autocomplete, TextField } from '@mui/material'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React from 'react'
 import useSWR from 'swr'
 
 export default function Layout({ children }) {

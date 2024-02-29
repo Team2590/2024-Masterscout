@@ -125,23 +125,23 @@ export default function Page({ params }) {
                         </Table>
                     </TableContainer>
                 </div>
-                <div style={{ marginInline: 'auto' }}>
+                <div style={{ marginInline: 'auto', marginBottom: '2rem' }}>
                     <h2 style={{ textAlign: 'center' }}>Raw Data</h2>
                     <TableContainer sx={{ maxWidth: '90vw', marginInline: 'auto' }} component={Paper}>
                         <Table>
                             <TableHead>
                                 <TableRow>
                                     {Object.keys(data[0]).map(key => {
-                                        return <TableCell>{key}</TableCell>
+                                        return <TableCell key={key}>{key}</TableCell>
                                     })}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {data.map(d => {
                                     return (
-                                        <TableRow>
+                                        <TableRow key={crypto.randomUUID}>
                                             {Object.values(d).map(value => {
-                                                return <TableCell>{value}</TableCell>
+                                                return <TableCell key={crypto.randomUUID}>{value}</TableCell>
                                             })}
                                         </TableRow>
                                     )
