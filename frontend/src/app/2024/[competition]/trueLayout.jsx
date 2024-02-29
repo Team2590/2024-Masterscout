@@ -1,5 +1,5 @@
 'use client'
-import { AppBar, Box, Drawer, IconButton, List, ListItemButton, Toolbar } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, List, ListItemButton, Toolbar, Tooltip } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import { red } from '@mui/material/colors'
 import Link from 'next/link'
@@ -22,16 +22,18 @@ export default function TrueLayout({ children, params }) {
         <>
             <AppBar position='static' sx={{ boxShadow: 'none', bgcolor: red[600] }}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <IconButton
-                        size='large'
-                        edge='start'
-                        color='inherit'
-                        aria-label='menu'
-                        sx={{ mr: 2 }}
-                        onClick={() => setDrawerState(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    <Tooltip title='Menu'>
+                        <IconButton
+                            size='large'
+                            edge='start'
+                            color='inherit'
+                            aria-label='menu'
+                            sx={{ mr: 2 }}
+                            onClick={() => setDrawerState(true)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Tooltip>
                     <p>NEM<span style={{ fontSize: '0.95rem' }}>Ǝ</span>SIS Masterscout™®© | <span>{params.competition}</span> | <span>2024</span></p>
                 </Toolbar>
             </AppBar>
