@@ -61,7 +61,7 @@ app.get('/api/:comp/all/teams', (req, res) => {
 
     // Send the data as JSON to the client
     res.json(results);
-    console.log(results);
+    // console.log(results);
   });
 });
 

@@ -1,5 +1,5 @@
 'use client'
-import { AppBar, Autocomplete, Box, Drawer, IconButton, List, ListItemButton, Toolbar, TextField, autocompleteClasses, CircularProgress } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, List, ListItemButton, Toolbar, Tooltip } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import { red } from '@mui/material/colors'
 import Link from 'next/link'
@@ -13,7 +13,7 @@ export default function TrueLayout({ children, params }) {
     const [drawerState, setDrawerState] = useState(false)
 
     const redirects = {
-        compare: () => router.push(`/2024/${params.competition}/compare?teams=${sessionStorage.getItem('compare-teams')}`),
+        compare: () => router.push(`/2024/${params.competition}/compare`),
         ranking: () => router.push(`/2024/${params.competition}/ranking`),
         teams: () => router.push(`/2024/${params.competition}/teams`)
     }
@@ -22,17 +22,19 @@ export default function TrueLayout({ children, params }) {
         <>
             <AppBar position='static' sx={{ boxShadow: 'none', bgcolor: red[600] }}>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <IconButton
-                        size='large'
-                        edge='start'
-                        color='inherit'
-                        aria-label='menu'
-                        sx={{ mr: 2 }}
-                        onClick={() => setDrawerState(true)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <p>NEM<span style={{ fontSize: '0.95rem' }}>Ǝ</span>SIS Masterscout™®© | <span>{params.competition}</span> | <span>2024</span></p>
+                    <Tooltip title='Menu'>
+                        <IconButton
+                            size='large'
+                            edge='start'
+                            color='inherit'
+                            aria-label='menu'
+                            sx={{ mr: 2 }}
+                            onClick={() => setDrawerState(true)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Link href='/' style={{ textDecoration: 'none', color: 'inherit' }}><p>NEM<span style={{ fontSize: '0.95rem' }}>Ǝ</span>SIS Masterscout™®© | <span>{params.competition}</span> | <span>2024</span></p></Link>
                 </Toolbar>
             </AppBar>
             <Drawer
