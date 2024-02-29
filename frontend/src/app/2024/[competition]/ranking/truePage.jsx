@@ -5,9 +5,14 @@ import CompareIcon from '@mui/icons-material/Compare';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { red } from '@mui/material/colors';
 
 const createColumn = (accessorKey, header, size, extra) => {
     return { accessorKey, header, size, ...extra }
+}
+
+const createSummedColumn = (accessorKey, header, size, extra) => {
+    return { accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => <span>{cell.getValue()}</span>, }
 }
 
 export default function TruePage({ data }) {
@@ -30,14 +35,14 @@ export default function TruePage({ data }) {
         createColumn('matchNum', 'Match Number', 120),
         createColumn('startingPos', 'Starting Position', 150),
         createColumn('leaveWing', 'Leave Wing'),
-        createColumn('spkrMade_atn', 'Speaker Made Autonomous', 150),
-        createColumn('spkrMissed_atn', 'Speaker Missed Autonomous', 150),
-        createColumn('ampMade_atn', 'Amp Made Autonomous', 150),
-        createColumn('ampMissed_atn', 'Amp Missed Autonomous', 150),
-        createColumn('spkrMade_tp', 'Speaker Made Teleoperated', 150),
-        createColumn('spkrMissed_tp', 'Speaker Missed Teleoperated', 150),
-        createColumn('ampMade_tp', 'Amp Made Teleoperated', 150),
-        createColumn('ampMissed_tp', 'Amp Missed Teleoperated', 150),
+        createSummedColumn('spkrMade_atn', 'Speaker Made Autonomous', 150),
+        createSummedColumn('spkrMissed_atn', 'Speaker Missed Autonomous', 150),
+        createSummedColumn('ampMade_atn', 'Amp Made Autonomous', 150),
+        createSummedColumn('ampMissed_atn', 'Amp Missed Autonomous', 150),
+        createSummedColumn('spkrMade_tp', 'Speaker Made Teleoperated', 150),
+        createSummedColumn('spkrMissed_tp', 'Speaker Missed Teleoperated', 150),
+        createSummedColumn('ampMade_tp', 'Amp Made Teleoperated', 150),
+        createSummedColumn('ampMissed_tp', 'Amp Missed Teleoperated', 150),
         createColumn('coopertition', 'Coopertition'),
         createColumn('climbLvl', 'Climb Level'),
         createColumn('Mic', 'Microphone'),
@@ -77,11 +82,11 @@ export default function TruePage({ data }) {
         state: { rowSelection },
         enableGrouping: true,
         initialState: {
-            expanded: false, //expand all groups by default
+            expanded: false,
             pagination: { pageIndex: 0, pageSize: 20 },
-            grouping: ['teamNum'], //an array of columns to group by by default (can be multiple)
+            grouping: ['teamNum'],
         },
-        renderTopToolbarCustomActions: ({ table }) => {
+        renderBottomToolbarCustomActions: ({ table }) => {
             return (
                 <Tooltip title='Compare'>
                     <Button
@@ -89,6 +94,7 @@ export default function TruePage({ data }) {
                         sx={{ marginTop: '2px' }}
                         variant='contained'
                         disabled={isComparedDisabled}
+                        color='inherit'
                         onClick={compareTeams}
                     >
                         Compare

@@ -2,7 +2,7 @@
 import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 import { TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody, TableRow } from '@mui/material'
-import React, { useMemo } from 'react'
+import React from 'react'
 import useSWR from 'swr'
 
 export default function Page({ params }) {

@@ -42,7 +42,7 @@ export default function Layout({ children }) {
                     renderInput={(params) =>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Search sx={{ color: 'action.active', mr: 1, mt: 2 }} />
-                            <TextField {...params} label="Teams..." variant='standard' />
+                            <TextField {...params} label="Teams" variant='standard' />
                         </Box>
                     }
                 />

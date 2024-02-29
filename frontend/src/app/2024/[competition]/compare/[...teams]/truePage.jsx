@@ -39,7 +39,7 @@ export default function TruePage({ teamsData }) {
                                 {teamsDataUtil.map(teamData => {
                                     return (
                                         <TableRow key={teamData.data[0].teamNum}>
-                                            <TableCell align='center'>{teamData.data[0].teamNum}</TableCell>
+                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>{teamData.data[0].teamNum}</TableCell>
                                             <TableCell align='center'>{teamData.getMinAmpAtn()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinAmpAtnGtr0()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinAmpTp()}</TableCell>
@@ -84,7 +84,7 @@ export default function TruePage({ teamsData }) {
                                 {teamsDataUtil.map(teamData => {
                                     return (
                                         <TableRow key={teamData.data[0].teamNum}>
-                                            <TableCell align='center'>{teamData.data[0].teamNum}</TableCell>
+                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>{teamData.data[0].teamNum}</TableCell>
                                             <TableCell align='center'>{teamData.getMinSpeakerAtn()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinSpeakerAtnGtr0()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinSpeakerTp()}</TableCell>
@@ -122,7 +122,7 @@ export default function TruePage({ teamsData }) {
                                 {teamsDataUtil.map(teamData => {
                                     return (
                                         <TableRow key={teamData.data[0].teamNum}>
-                                            <TableCell align='center'>{teamData.data[0].teamNum}</TableCell>
+                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>{teamData.data[0].teamNum}</TableCell>
                                             <TableCell align='center'>{teamData.getMinTrap()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinTrapGtr0()}</TableCell>
                                             <TableCell align='center'>{teamData.getAvgTrap()}</TableCell>

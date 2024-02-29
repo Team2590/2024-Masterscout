@@ -1,10 +1,8 @@
 'use client'
 import Image from "next/image";
-import { Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import useSWR from "swr";
 import { fetcher } from "../util/fetchers";
-import { combine } from "@/util/combine";
-import { useEffect } from "react";
 import Link from "next/link";
 
 export default function Home() {
@@ -12,15 +10,18 @@ export default function Home() {
 
     if (data) {
         return (
-            <Stack>
-                {data.map(({ Tables_in_Nemesis2590 }) => {
-                    return (
-                        <div>
-                            <Link href={`/2024/${Tables_in_Nemesis2590}`}>{Tables_in_Nemesis2590}</Link>
-                        </div>
-                    )
-                })}
-            </Stack>
+            <div style={{ marginInline: 'auto', marginTop: '2rem' }}>
+                <Stack sx={{ marginInline: 'auto', textAlign: 'center' }}>
+                    <h1>Competitions</h1>
+                    {data.map(({ Tables_in_Nemesis2590 }) => {
+                        return (
+                            <div>
+                                <Link href={`/2024/${Tables_in_Nemesis2590}`} style={{ textDecoration: 'none', color: 'inherit', fontSize: '1.75rem' }}>{Tables_in_Nemesis2590}</Link>
+                            </div>
+                        )
+                    })}
+                </Stack>
+            </div>
         )
     }
 }
