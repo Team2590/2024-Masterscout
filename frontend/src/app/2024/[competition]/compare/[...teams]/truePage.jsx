@@ -2,9 +2,12 @@
 import Loading from '@/app/loading'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import React, { useMemo } from 'react'
 
 export default function TruePage({ teamsData }) {
+    const params = useParams()
     const teamsDataUtil = useMemo(() => {
         return teamsData.map(team => {
             return new TeamDataUtil2024(team)
@@ -37,9 +40,17 @@ export default function TruePage({ teamsData }) {
                             </TableHead>
                             <TableBody>
                                 {teamsDataUtil.map(teamData => {
+                                    const { teamNum } = teamData.data[0]
                                     return (
-                                        <TableRow key={teamData.data[0].teamNum}>
-                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>{teamData.data[0].teamNum}</TableCell>
+                                        <TableRow key={teamNum}>
+                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>
+                                                <Link
+                                                    href={`/2024/${params.competition}/teams/${teamNum}`}
+                                                    style={{ color: 'inherit', textDecoration: 'inherit' }}
+                                                >
+                                                    {teamNum}
+                                                </Link>
+                                            </TableCell>
                                             <TableCell align='center'>{teamData.getMinAmpAtn()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinAmpAtnGtr0()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinAmpTp()}</TableCell>
@@ -82,9 +93,17 @@ export default function TruePage({ teamsData }) {
                             </TableHead>
                             <TableBody>
                                 {teamsDataUtil.map(teamData => {
+                                    const { teamNum } = teamData.data[0]
                                     return (
-                                        <TableRow key={teamData.data[0].teamNum}>
-                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>{teamData.data[0].teamNum}</TableCell>
+                                        <TableRow key={teamNum}>
+                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>
+                                                <Link
+                                                    href={`/2024/${params.competition}/teams/${teamNum}`}
+                                                    style={{ color: 'inherit', textDecoration: 'inherit' }}
+                                                >
+                                                    {teamNum}
+                                                </Link>
+                                            </TableCell>
                                             <TableCell align='center'>{teamData.getMinSpeakerAtn()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinSpeakerAtnGtr0()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinSpeakerTp()}</TableCell>
@@ -120,9 +139,17 @@ export default function TruePage({ teamsData }) {
                             </TableHead>
                             <TableBody>
                                 {teamsDataUtil.map(teamData => {
+                                    const { teamNum } = teamData.data[0]
                                     return (
-                                        <TableRow key={teamData.data[0].teamNum}>
-                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>{teamData.data[0].teamNum}</TableCell>
+                                        <TableRow key={teamNum}>
+                                            <TableCell align='center' sx={{ fontSize: '1.25rem' }}>
+                                                <Link
+                                                    href={`/2024/${params.competition}/teams/${teamNum}`}
+                                                    style={{ color: 'inherit', textDecoration: 'inherit' }}
+                                                >
+                                                    {teamNum}
+                                                </Link>
+                                            </TableCell>
                                             <TableCell align='center'>{teamData.getMinTrap()}</TableCell>
                                             <TableCell align='center'>{teamData.getMinTrapGtr0()}</TableCell>
                                             <TableCell align='center'>{teamData.getAvgTrap()}</TableCell>

@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { red } from '@mui/material/colors';
+import { download, generateCsv, mkConfig } from 'export-to-csv';
 
 const createColumn = (accessorKey, header, size, extra) => {
     return { accessorKey, header, size, ...extra }
@@ -15,10 +16,21 @@ const createSummedColumn = (accessorKey, header, size, extra) => {
     return { accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => <span>{cell.getValue()}</span>, }
 }
 
+const csvConfig = mkConfig({
+    fieldSeparator: ',',
+    decimalSeparator: '.',
+    useKeysAsHeaders: true
+})
+
 export default function TruePage({ data }) {
     const [rowSelection, setRowSelection] = useState({})
     const router = useRouter()
     const params = useParams()
+
+    const handleExportData = () => {
+        const csv = generateCsv(csvConfig)(data)
+        download(csvConfig)(csv)
+    }
 
     const columns = useMemo(() => [
         createColumn('id', 'id', 60),
@@ -88,18 +100,29 @@ export default function TruePage({ data }) {
         },
         renderBottomToolbarCustomActions: ({ table }) => {
             return (
-                <Tooltip title='Compare'>
-                    <Button
-                        aria-label='compare'
-                        sx={{ marginTop: '2px' }}
-                        variant='contained'
-                        disabled={isComparedDisabled}
-                        color='inherit'
-                        onClick={compareTeams}
-                    >
-                        Compare
-                    </Button>
-                </Tooltip >
+                <div>
+                    <Tooltip title='Compare'>
+                        <Button
+                            onClick={() => handleExportData(table.getSelectedRowModel().rows)}
+                            color='inherit'
+                            variant='contained'
+                            sx={{ marginLeft: '0.5rem' }}
+                        >
+                            Download CSV
+                        </Button>
+                        <Button
+                            aria-label='compare'
+                            sx={{ marginTop: '2px' }}
+                            variant='contained'
+                            disabled={isComparedDisabled}
+                            color='inherit'
+                            onClick={compareTeams}
+                            sx={{ marginLeft: '1.5rem' }}
+                        >
+                            Compare
+                        </Button>
+                    </Tooltip >
+                </div>
             )
         }
     })

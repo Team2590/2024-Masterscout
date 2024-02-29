@@ -1,4 +1,5 @@
 'use client'
+import Loading from '@/app/loading'
 import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 import { TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody, TableRow } from '@mui/material'
@@ -6,7 +7,7 @@ import React from 'react'
 import useSWR from 'swr'
 
 export default function Page({ params }) {
-    const { data, isLoading, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${params.team}`, fetcher)
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${params.team}`, fetcher)
 
     if (data) {
         const teamData = new TeamDataUtil2024(data)
@@ -21,7 +22,6 @@ export default function Page({ params }) {
                         margin: 'auto'
                     }} /> */}
                 </div>
-                {/* <Divider style={{ maxWidth: '90vw', marginInline: 'auto' }} /> */}
                 <div style={{ marginInline: 'auto' }}>
                     <h2 style={{ textAlign: 'center' }}>Amp</h2>
                     <TableContainer sx={{ maxWidth: 1200, marginInline: 'auto' }} component={Paper}>
@@ -125,11 +125,34 @@ export default function Page({ params }) {
                         </Table>
                     </TableContainer>
                 </div>
+                <div style={{ marginInline: 'auto' }}>
+                    <h2 style={{ textAlign: 'center' }}>Raw Data</h2>
+                    <TableContainer sx={{ maxWidth: '90vw', marginInline: 'auto' }} component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    {Object.keys(data[0]).map(key => {
+                                        return <TableCell>{key}</TableCell>
+                                    })}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {data.map(d => {
+                                    return (
+                                        <TableRow>
+                                            {Object.values(d).map(value => {
+                                                return <TableCell>{value}</TableCell>
+                                            })}
+                                        </TableRow>
+                                    )
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
             </>
         )
     } else {
-        return (
-            <p>fuck</p>
-        )
+        return <Loading />
     }
 }
