@@ -25,7 +25,11 @@ export default function Page({ params }) {
     }, [data])
 
     const handleSubmit = (e, value) => {
+        if (typeof value == 'number' || typeof value == 'string') {
+            value = { label: value.toString(), id: options.indexOf(option => option.label == value) }
+        }
         setLoading(true)
+        console.log(value)
         if (options.some(({ label }) => label == value.label)) {
             router.push(`./teams/${value.label}`)
         } else {
@@ -43,10 +47,11 @@ export default function Page({ params }) {
                 options={options}
                 sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
                 onChange={handleSubmit}
+                onSubmit={handleSubmit}
                 renderInput={(params) =>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Search sx={{ color: 'action.active', mr: 1, mt: 2 }} />
-                        <TextField {...params} label="Team" variant='standard' onSubmit={handleSubmit} />
+                        <TextField {...params} label="Team" variant='standard' />
                     </Box>
                 }
             />

@@ -139,9 +139,9 @@ export default function Page({ params }) {
                             <TableBody>
                                 {data.map(d => {
                                     return (
-                                        <TableRow key={crypto.randomUUID}>
-                                            {Object.values(d).map(value => {
-                                                return <TableCell key={crypto.randomUUID}>{value}</TableCell>
+                                        <TableRow key={d.id}>
+                                            {Object.values(d).map((value, index) => {
+                                                return <TableCell key={index}>{value}</TableCell>
                                             })}
                                         </TableRow>
                                     )
