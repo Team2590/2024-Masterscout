@@ -2,7 +2,7 @@ import React from 'react'
 import TruePage from './truePage'
 
 const getData = async (comp) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${comp}/all/raw`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${comp}/all/raw`, { cache: 'no-cache' })
     return response.json()
 }
 

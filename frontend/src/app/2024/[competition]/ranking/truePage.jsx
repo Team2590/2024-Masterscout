@@ -1,7 +1,7 @@
 'use client'
 import { Button, IconButton, Tooltip } from '@mui/material'
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
@@ -62,26 +62,17 @@ export default function TruePage({ data }) {
         createColumn('droppedHit', 'Dropped When Hit'),
     ], [])
 
+    const selectedTeams = Object.keys(rowSelection).filter(row => {
+        return row.includes('teamNum')
+    }).map(key => {
+        return parseInt(key.replace('teamNum:', ''))
+    })
+
     const compareTeams = () => {
-        const selectedTeams = Array.from(new Set(
-            Object.keys(rowSelection).map(index => {
-                return data[index].teamNum
-            })
-        ))
         router.push(`/2024/${params.competition}/compare/${selectedTeams.join('/')}`)
     }
 
-    const isComparedDisabled = () => {
-        if (Object.keys(rowSelection).length < 2) {
-            return false
-        }
-        if (selected.every(team => {
-            team == data[Object.keys(rowSelection)[0]].teamNum
-        })) {
-            return false
-        }
-        return true
-    }
+    const isComparedDisabled = selectedTeams.length < 2
 
     const table = useMaterialReactTable({
         data,
