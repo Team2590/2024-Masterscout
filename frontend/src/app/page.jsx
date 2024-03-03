@@ -15,7 +15,7 @@ export default function Home() {
                     <h1>Competitions</h1>
                     {data.map(({ Tables_in_Nemesis2590 }, index) => {
                         return (
-                            <div key={index}>
+                            <div key={index} style={{ marginBottom: '1rem' }}>
                                 <Link
                                     href={`/2024/${Tables_in_Nemesis2590}`}
                                     style={{ textDecoration: 'none', color: 'inherit', fontSize: '1.75rem' }}
