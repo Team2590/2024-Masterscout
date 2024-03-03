@@ -49,7 +49,7 @@ export class TeamDataUtil2024 {
         const missed = combine.objPropNums(this.data, 'ampMissed_atn')
         const scored = this.getTotalAmpAtn()
         const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (typeof accuracy != 'number') {
+        if (isNaN(accuracy)) {
             return 0
         } else {
             return accuracy
@@ -60,7 +60,7 @@ export class TeamDataUtil2024 {
         const missed = combine.objPropNums(this.data, 'spkrMissed_atn')
         const scored = this.getTotalSpeakerAtn()
         const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (typeof accuracy != 'number') {
+        if (isNaN(accuracy)) {
             return 0
         } else {
             return accuracy
@@ -71,7 +71,7 @@ export class TeamDataUtil2024 {
         const missed = combine.objPropNums(this.data, 'ampMissed_tp')
         const scored = this.getTotalAmpTp()
         const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (typeof accuracy != 'number') {
+        if (isNaN(accuracy)) {
             return 0
         } else {
             return accuracy
@@ -82,7 +82,7 @@ export class TeamDataUtil2024 {
         const missed = combine.objPropNums(this.data, 'spkrMissed_tp')
         const scored = this.getTotalSpeakerTp()
         const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (typeof accuracy != 'number') {
+        if (isNaN(accuracy)) {
             return 0
         } else {
             return accuracy
