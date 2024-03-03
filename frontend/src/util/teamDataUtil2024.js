@@ -48,25 +48,45 @@ export class TeamDataUtil2024 {
     getAccuracyAmpAtn() {
         const missed = combine.objPropNums(this.data, 'ampMissed_atn')
         const scored = this.getTotalAmpAtn()
-        return parseFloat(scored / (scored + missed)).toFixed(2)
+        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
+        if (typeof accuracy != 'number') {
+            return 0
+        } else {
+            return accuracy
+        }
     }
 
     getAccuracySpeakerAtn() {
         const missed = combine.objPropNums(this.data, 'spkrMissed_atn')
         const scored = this.getTotalSpeakerAtn()
-        return parseFloat(scored / (scored + missed)).toFixed(2)
+        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
+        if (typeof accuracy != 'number') {
+            return 0
+        } else {
+            return accuracy
+        }
     }
 
     getAccuracyAmpTp() {
         const missed = combine.objPropNums(this.data, 'ampMissed_tp')
         const scored = this.getTotalAmpTp()
-        return parseFloat(scored / (scored + missed)).toFixed(2)
+        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
+        if (typeof accuracy != 'number') {
+            return 0
+        } else {
+            return accuracy
+        }
     }
 
     getAccuracySpeakerTp() {
         const missed = combine.objPropNums(this.data, 'spkrMissed_tp')
         const scored = this.getTotalSpeakerTp()
-        return parseFloat(scored / (scored + missed)).toFixed(2)
+        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
+        if (typeof accuracy != 'number') {
+            return 0
+        } else {
+            return accuracy
+        }
     }
 
     getMinAmpAtn() {
