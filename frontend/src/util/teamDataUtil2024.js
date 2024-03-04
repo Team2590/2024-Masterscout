@@ -48,8 +48,7 @@ export class TeamDataUtil2024 {
     getAccuracyAmpAtn() {
         const missed = combine.objPropNums(this.data, 'ampMissed_atn')
         const scored = this.getTotalAmpAtn()
-        console.log('amp made atn', scored)
-        console.log('amp missed atn', missed)
+        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
         if (isNaN(accuracy)) {
             return 0
         } else {
