@@ -29,7 +29,7 @@ export default function TruePage({ teamsData }) {
                             {teamsDataUtil.map(teamData => {
                                 const { teamNum } = teamData.data[0]
                                 return (
-                                    <TableRow>
+                                    <TableRow key={teamNum}>
                                         <TableCell align='center' sx={{ fontSize: '1.25rem' }}>
                                             <Link
                                                 href={`/2024/${params.competition}/teams/${teamNum}`}
