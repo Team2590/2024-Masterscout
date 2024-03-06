@@ -183,4 +183,13 @@ export class TeamDataUtil2024 {
         const sorted = this.data.sort((a, b) => a['trap'] - b['trap'])
         return sorted[sorted.length - 1].trap
     }
+
+    getTotalGamePieces() {
+        let total = 0
+        this.data.forEach(d => {
+            const sum = d.spkrMade_atn + d.spkrMade_tp + d.ampMade_atn + d.ampMade_tp
+            total += sum
+        })
+        return total
+    }
 }

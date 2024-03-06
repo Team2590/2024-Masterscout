@@ -3,7 +3,7 @@ import Loading from '@/app/loading'
 import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 import { TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody, TableRow } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import useSWR from 'swr'
 
 export default function Page({ params }) {
@@ -11,10 +11,12 @@ export default function Page({ params }) {
 
     if (data) {
         const teamData = new TeamDataUtil2024(data)
+        console.log(teamData.data)
         return (
             <>
                 <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                    <h1 style={{ textAlign: 'center', fontSize: '2rem' }}>{decodeURI(params.team)}</h1>
+                    <h1 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '-1rem' }}>{decodeURI(params.team)}</h1>
+                    <p style={{ textAlign: 'center', fontSize: '1.25rem' }}>Total Game Pieces: {teamData.getTotalGamePieces()}</p>
                     {/* <img src='https://placehold.co/400x400' style={{
                         borderRadius: '0.25rem',
                         height: '400',

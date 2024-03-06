@@ -1,7 +1,7 @@
 'use client'
 import { Button, IconButton, Tooltip } from '@mui/material'
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
@@ -42,6 +42,7 @@ export default function TruePage({ data }) {
                 </Link>
             ),
         }),
+        createSummedColumn('totalGamePieces', 'Total Game Pieces'),
         createColumn('matchNum', 'Match Number', 120),
         createColumn('startingPos', 'Starting Position', 150),
         createColumn('leaveWing', 'Leave Wing'),
@@ -86,6 +87,12 @@ export default function TruePage({ data }) {
             expanded: false,
             pagination: { pageIndex: 0, pageSize: 20 },
             grouping: ['teamNum'],
+            sorting: [
+                {
+                    id: 'totalGamePieces',
+                    desc: true
+                }
+            ]
         },
         renderBottomToolbarCustomActions: ({ table }) => {
             return (

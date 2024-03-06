@@ -7,7 +7,12 @@ const getData = async (comp) => {
 }
 
 export default async function Page({ params }) {
-    const data = await getData(params.competition)
+    let data = await getData(params.competition)
+
+    data = data.map(d => {
+        const totalGamePieces = d.spkrMade_atn + d.spkrMade_tp + d.ampMade_atn + d.ampMade_tp
+        return { ...d, totalGamePieces }
+    })
 
     return (
         <TruePage data={data} />

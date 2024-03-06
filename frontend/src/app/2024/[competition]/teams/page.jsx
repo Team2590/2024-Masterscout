@@ -3,7 +3,7 @@ import { Autocomplete, Container, TextField, Snackbar, IconButton, Box } from '@
 import CloseIcon from '@mui/icons-material/Close';
 import { Search } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import Loading from '@/app/loading';
 import useSWR from 'swr';
 import { fetcher } from '@/util/fetchers';
@@ -15,7 +15,7 @@ export default function Page({ params }) {
     const [options, setOptions] = useState([]);
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (data) {
             setOptions(data.map(({ teamNum }) => {
                 const id = data.findIndex(a => a.teamNum == teamNum)

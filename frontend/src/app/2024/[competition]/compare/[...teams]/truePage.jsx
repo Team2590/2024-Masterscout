@@ -18,6 +18,34 @@ export default function TruePage({ teamsData }) {
         return (
             <>
                 <div style={{ marginInline: 'auto', marginTop: '4rem' }}>
+                    <TableContainer sx={{ width: 'fit-content', marginInline: 'auto' }} component={Paper}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align='center'>Team</TableCell>
+                                <TableCell align='center'>Total Game Pieces</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {teamsDataUtil.map(teamData => {
+                                const { teamNum } = teamData.data[0]
+                                return (
+                                    <TableRow>
+                                        <TableCell align='center' sx={{ fontSize: '1.25rem' }}>
+                                            <Link
+                                                href={`/2024/${params.competition}/teams/${teamNum}`}
+                                                style={{ color: 'inherit', textDecoration: 'inherit' }}
+                                            >
+                                                {teamNum}
+                                            </Link>
+                                        </TableCell>
+                                        <TableCell align='center'>{teamData.getTotalGamePieces()}</TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </TableContainer>
+                </div>
+                <div style={{ marginInline: 'auto', marginTop: '4rem' }}>
                     <h2 style={{ textAlign: 'center' }}>Amp</h2>
                     <TableContainer sx={{ maxWidth: 1200, marginInline: 'auto' }} component={Paper}>
                         <Table>
