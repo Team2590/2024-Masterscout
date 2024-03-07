@@ -4,22 +4,28 @@ const cors = require('cors')
 /**
  * Credentials are prob changed because db is now hosted on AWS
  */
-const connection = mysql.createConnection({
+// const connection = mysql.createConnection({
+//   host: 'nemesis2590-database.cxakssa62a0n.us-east-2.rds.amazonaws.com',
+//   user: 'Nemesis',
+//   password: 'Nemesis2590!',
+//   database: 'Nemesis2590'
+// });
+const connection = mysql.createPool({
   host: 'nemesis2590-database.cxakssa62a0n.us-east-2.rds.amazonaws.com',
   user: 'Nemesis',
   password: 'Nemesis2590!',
   database: 'Nemesis2590'
-});
+})
 const app = express();
 app.use(cors())
 // Connect to the database
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
-  }
-  console.log('Connected to MySQL database');
-});
+// connection.connect((err) => {
+//   if (err) {
+//     console.error('Error connecting to MySQL database:', err);
+//     return;
+//   }
+//   console.log('Connected to MySQL database');
+// });
 
 // Returns Competition names 
 app.get('/api/comp', (req, res) => {
