@@ -13,7 +13,7 @@ export default function TrueLayout({ children, params }) {
 
     const redirects = {
         compare: () => router.push(`/2024/${params.competition}/compare`),
-        ranking: () => router.push(`/2024/${params.competition}/ranking`),
+        ranking: () => router.push(`/2024/${params.competition}`),
         teams: () => router.push(`/2024/${params.competition}/teams`)
     }
 
