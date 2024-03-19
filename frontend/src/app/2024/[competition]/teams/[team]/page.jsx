@@ -4,26 +4,22 @@ import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { TableContainer, Paper, TableHead, Table, TableCell, Divider, TableBody, TableRow, Box, Typography, Grid } from '@mui/material'
-import React, { useEffect } from 'react'
+import { TableContainer, Paper, TableHead, Table, TableCell, TableBody, TableRow, Box, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import useSWR from 'swr'
 import { BarChart, LineChart } from '@mui/x-charts';
+import { useSessionStorage } from '@/util/useSessionStorage';
 
 export default function Page({ params }) {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${params.team}`, fetcher)
-    const [tabIndex, setTabIndex] = React.useState(0)
-
-    const handleChange = (e, val) => {
-        setTabIndex(val);
-    }
+    const [tabIndex, setTabIndex] = useSessionStorage('team-tab-index', 0)
 
     if (data) {
         const teamData = new TeamDataUtil2024(data)
-        console.log(teamData.data)
-        console.log(teamData.getMatchNums())
+        console.log(teamData.getNumOfMatchesPlayed())
         return (
             <>
-                <Tabs value={tabIndex} onChange={handleChange} sx={{ marginTop: '0.25rem' }}>
+                <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ marginTop: '0.25rem' }}>
                     <Tab label='Tables' sx={{ marginInline: 'auto', width: '100%' }} />
                     <Tab label='Charts' sx={{ marginInline: 'auto', width: '100%' }} />
                 </Tabs>

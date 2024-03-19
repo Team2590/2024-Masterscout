@@ -199,6 +199,10 @@ export class TeamDataUtil2024 {
         }).sort((a, b) => a - b)
     }
 
+    getNumOfMatchesPlayed() {
+        return this.getMatchNums().length
+    }
+
     getAmpAutoScores() {
         return this.data.map(d => {
             return d.ampMade_atn
