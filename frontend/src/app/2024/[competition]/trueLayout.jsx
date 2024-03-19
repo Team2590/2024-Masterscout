@@ -1,5 +1,5 @@
 'use client'
-import { AppBar, Box, Drawer, IconButton, List, ListItemButton, Toolbar, Tooltip } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, List, ListItem, ListItemButton, Toolbar, Tooltip } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import { red } from '@mui/material/colors'
 import Link from 'next/link'
@@ -12,9 +12,9 @@ export default function TrueLayout({ children, params }) {
     const [drawerState, setDrawerState] = useState(false)
 
     const redirects = {
-        compare: () => router.push(`/2024/${params.competition}/compare`),
-        ranking: () => router.push(`/2024/${params.competition}`),
-        teams: () => router.push(`/2024/${params.competition}/teams`)
+        compare: `/2024/${params.competition}/compare`,
+        ranking: `/2024/${params.competition}`,
+        teams: `/2024/${params.competition}/teams`
     }
 
     return (
@@ -48,13 +48,13 @@ export default function TrueLayout({ children, params }) {
                     color: 'white',
                 }}>
                     <List sx={{ margin: 0, padding: 0 }}>
-                        <ListItemButton sx={{ p: 3 }} onClick={redirects.compare} role='link'>
+                        <ListItemButton sx={{ p: 3 }} role='link' component={Link} href={redirects.compare}>
                             Compare
                         </ListItemButton>
-                        <ListItemButton sx={{ p: 3 }} onClick={redirects.ranking} role='link'>
+                        <ListItemButton sx={{ p: 3 }} role='link' component={Link} href={redirects.ranking}>
                             Ranking
                         </ListItemButton>
-                        <ListItemButton sx={{ p: 3 }} onClick={redirects.teams} role='link'>
+                        <ListItemButton sx={{ p: 3 }} role='link' component={Link} href={redirects.teams}>
                             Teams
                         </ListItemButton>
                     </List>

@@ -1,8 +1,8 @@
 'use client'
 import Loading from '@/app/loading'
 import { combine } from '@/util/combine'
+import { normalizeTeamData } from '@/util/normalizeTeamsData'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
-import { useSessionStorage } from '@/util/useSessionStorage'
 import { Box, Divider, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material'
 import { BarChart } from '@mui/x-charts'
 import Link from 'next/link'
@@ -16,9 +16,9 @@ export default function TruePage({ teamsData }) {
             return new TeamDataUtil2024(team)
         })
     }, [teamsData])
-    const [tabIndex, setTabIndex] = useSessionStorage('compare-tab-index', 0)
+    const [tabIndex, setTabIndex] = useState(0)
 
-    const getMatchNums = () => {
+    const getAllMatchNums = () => {
         if (teamsDataUtil) {
             return teamsDataUtil.map(teamData => {
                 return teamData.data.map(data => {
@@ -29,7 +29,12 @@ export default function TruePage({ teamsData }) {
         return 0
     }
 
+    const getAllMatchNumsNormalized = () => {
+        return new Array(Math.max(...getAllMatchNums())).fill(0).map((val, index) => { return index })
+    }
+
     if (teamsData) {
+        console.log(getAllMatchNumsNormalized())
         return (
             <>
                 <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ marginTop: '0.5rem' }}>
@@ -228,13 +233,13 @@ export default function TruePage({ teamsData }) {
                                 />
                             </Box>
                         </Box>
-                        {/* <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
                             <Box width='fit-content'>
                                 <Typography variant='h5' textAlign='center'>Amp Auto Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMatchNums() }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getAmpAutoScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getAmpAutoScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -243,9 +248,9 @@ export default function TruePage({ teamsData }) {
                             <Box width='fit-content'>
                                 <Typography variant='h5' textAlign='center'>Amp Teleoperated Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMatchNums() }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getAmpTeleopScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getAmpTeleopScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -256,9 +261,9 @@ export default function TruePage({ teamsData }) {
                             <Box width='fit-content'>
                                 <Typography variant='h5' textAlign='center'>Speaker Auto Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMatchNums() }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNums() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getSpeakerAutoScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getSpeakerAutoScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -267,9 +272,9 @@ export default function TruePage({ teamsData }) {
                             <Box width='fit-content'>
                                 <Typography variant='h5' textAlign='center'>Speaker Teleoperated Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMatchNums() }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNums() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getSpeakerTeleopScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getSpeakerTeleopScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -280,9 +285,9 @@ export default function TruePage({ teamsData }) {
                             <Box width='fit-content'>
                                 <Typography variant='h5' textAlign='center'>Total Amp Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMatchNums() }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getTotalAmpScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getTotalAmpScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -291,15 +296,15 @@ export default function TruePage({ teamsData }) {
                             <Box width='fit-content'>
                                 <Typography variant='h5' textAlign='center'>Total Speaker Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMatchNums() }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getTotalSpeakerScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getTotalSpeakerScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
                                 />
                             </Box>
-                        </Box> */}
+                        </Box>
                     </>
                 )}
             </>

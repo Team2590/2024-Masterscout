@@ -160,27 +160,27 @@ export class TeamDataUtil2024 {
     }
 
     getLastAmpAtn() {
-        const sorted = this.data.sort((a, b) => a['ampMade_atn'] - b['ampMade_atn'])
+        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
         return sorted[sorted.length - 1].ampMade_atn
     }
 
     getLastSpeakerAtn() {
-        const sorted = this.data.sort((a, b) => a['spkrMade_atn'] - b['spkrMade_atn'])
+        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
         return sorted[sorted.length - 1].spkrMade_atn
     }
 
     getLastAmpTp() {
-        const sorted = this.data.sort((a, b) => a['ampMade_tp'] - b['ampMade_tp'])
+        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
         return sorted[sorted.length - 1].ampMade_tp
     }
 
     getLastSpeakerTp() {
-        const sorted = this.data.sort((a, b) => a['spkrMade_tp'] - b['spkrMade_tp'])
+        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
         return sorted[sorted.length - 1].spkrMade_tp
     }
 
     getLastTrap() {
-        const sorted = this.data.sort((a, b) => a['trap'] - b['trap'])
+        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
         return sorted[sorted.length - 1].trap
     }
 
@@ -204,25 +204,25 @@ export class TeamDataUtil2024 {
     }
 
     getAmpAutoScores() {
-        return this.data.map(d => {
+        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
             return d.ampMade_atn
         })
     }
 
     getAmpTeleopScores() {
-        return this.data.map(d => {
+        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
             return d.ampMade_tp
         })
     }
 
     getSpeakerAutoScores() {
-        return this.data.map(d => {
+        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
             return d.spkrMade_atn
         })
     }
 
     getSpeakerTeleopScores() {
-        return this.data.map(d => {
+        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
             return d.spkrMade_tp
         })
     }

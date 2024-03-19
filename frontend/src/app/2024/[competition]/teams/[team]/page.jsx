@@ -8,18 +8,16 @@ import { TableContainer, Paper, TableHead, Table, TableCell, TableBody, TableRow
 import React, { useState } from 'react'
 import useSWR from 'swr'
 import { BarChart, LineChart } from '@mui/x-charts';
-import { useSessionStorage } from '@/util/useSessionStorage';
 
 export default function Page({ params }) {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${params.team}`, fetcher)
-    const [tabIndex, setTabIndex] = useSessionStorage('team-tab-index', 0)
+    const [tabIndex, setTabIndex] = useState(0)
 
     if (data) {
         const teamData = new TeamDataUtil2024(data)
-        console.log(teamData.getNumOfMatchesPlayed())
         return (
             <>
-                <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ marginTop: '0.25rem' }}>
+                <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)}>
                     <Tab label='Tables' sx={{ marginInline: 'auto', width: '100%' }} />
                     <Tab label='Charts' sx={{ marginInline: 'auto', width: '100%' }} />
                 </Tabs>
@@ -150,7 +148,7 @@ export default function Page({ params }) {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {data.map(d => {
+                                        {data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
                                             return (
                                                 <TableRow key={d.id}>
                                                     {Object.values(d).map((value, index) => {
