@@ -20,7 +20,7 @@ export default function Home() {
                                     href={`/2024/${Tables_in_Nemesis2590}`}
                                     style={{ textDecoration: 'none', color: 'inherit', fontSize: '1.75rem' }}
                                 >
-                                    {Tables_in_Nemesis2590}
+                                    {decodeURI(Tables_in_Nemesis2590)}
                                 </Link>
                             </div>
                         )

@@ -33,7 +33,7 @@ export default function TrueLayout({ children, params }) {
                             <MenuIcon />
                         </IconButton>
                     </Tooltip>
-                    <Link href='/' style={{ textDecoration: 'none', color: 'inherit' }}><p>NEM<span style={{ fontSize: '0.95rem' }}>Ǝ</span>SIS Masterscout™®© | <span>{params.competition}</span> | <span>2024</span></p></Link>
+                    <Link href='/' style={{ textDecoration: 'none', color: 'inherit' }}><p>NEM<span style={{ fontSize: '0.95rem' }}>Ǝ</span>SIS Masterscout™®© | <span>{decodeURI(params.competition)}</span> | <span>2024</span></p></Link>
                 </Toolbar>
             </AppBar>
             <Drawer

@@ -14,16 +14,18 @@ const createSummedColumn = (accessorKey, header, size, extra) => {
     return { accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => <span>{cell.getValue()}</span>, }
 }
 
-const csvConfig = mkConfig({
-    fieldSeparator: ',',
-    decimalSeparator: '.',
-    useKeysAsHeaders: true
-})
 
 export default function TruePage({ data }) {
     const [rowSelection, setRowSelection] = useState({})
     const router = useRouter()
     const params = useParams()
+
+    const csvConfig = mkConfig({
+        fieldSeparator: ',',
+        decimalSeparator: '.',
+        useKeysAsHeaders: true,
+        filename: `${params.competition} export`
+    })
 
     const handleExportData = () => {
         const csv = generateCsv(csvConfig)(data)

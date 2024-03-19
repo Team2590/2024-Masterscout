@@ -192,4 +192,46 @@ export class TeamDataUtil2024 {
         })
         return total
     }
+
+    getMatchNums() {
+        return this.data.map(d => {
+            return d.matchNum
+        }).sort((a, b) => a - b)
+    }
+
+    getAmpAutoScores() {
+        return this.data.map(d => {
+            return d.ampMade_atn
+        })
+    }
+
+    getAmpTeleopScores() {
+        return this.data.map(d => {
+            return d.ampMade_tp
+        })
+    }
+
+    getSpeakerAutoScores() {
+        return this.data.map(d => {
+            return d.spkrMade_atn
+        })
+    }
+
+    getSpeakerTeleopScores() {
+        return this.data.map(d => {
+            return d.spkrMade_tp
+        })
+    }
+
+    getTotalAmpScores() {
+        return this.getAmpAutoScores().map((val, i) => {
+            return val += this.getAmpTeleopScores()[i]
+        })
+    }
+
+    getTotalSpeakerScores() {
+        return this.getSpeakerAutoScores().map((val, i) => {
+            return val += this.getSpeakerTeleopScores()[i]
+        })
+    }
 }
