@@ -29,12 +29,20 @@ export default function TruePage({ data }) {
     }
 
     const getShade = (key, value) => {
-        const max = Math.max(...data.map(d => {
-            return d[key]
-        }))
+        const tempMap = new Map()
+        const temp = data.map(d => {
+            return { teamNum: d.teamNum, value: d[key] }
+        })
+        temp.forEach(({ teamNum, value }) => {
+            if (tempMap.has(teamNum)) tempMap.set(teamNum, tempMap.get(teamNum) + value)
+            else tempMap.set(teamNum, value)
+        })
+        const allAggregated = tempMap.values()
+
+        const max = Math.max(...allAggregated)
         const step = max / 4
         if (value == 0) {
-            return
+            return 'hsl(5, 90%, 35%)'
         } else if (value < step) {
             return 'hsl(147, 100%, 10%)'
         } else if (value < step * 2) {
@@ -42,7 +50,7 @@ export default function TruePage({ data }) {
         } else if (value < step * 3) {
             return 'hsl(147, 100%, 30%)'
         } else {
-            return 'hsl(147, 100%, 40%)'
+            return 'hsl(147, 100%, 37.5%)'
         }
     }
 
