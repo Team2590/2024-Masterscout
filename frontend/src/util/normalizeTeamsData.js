@@ -15,6 +15,5 @@ export const normalizeTeamData = (totalMatches, matchesPlayed, data) => {
         }
     })
 
-    console.log(dataMap)
     return normalized
 }

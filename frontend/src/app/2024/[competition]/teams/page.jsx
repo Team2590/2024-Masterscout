@@ -29,7 +29,6 @@ export default function Page({ params }) {
             value = { label: value.toString(), id: options.indexOf(option => option.label == value) }
         }
         setLoading(true)
-        console.log(value)
         if (options.some(({ label }) => label == value.label)) {
             router.push(`./teams/${value.label}`)
         } else {

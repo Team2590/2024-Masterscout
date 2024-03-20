@@ -32,7 +32,6 @@ export default function TruePage({ data }) {
     }
 
     const columns = useMemo(() => [
-        createColumn('id', 'id', 60),
         createColumn('teamNum', 'Team Number', 80, {
             Cell: ({ renderedCellValue }) => (
                 <Link
@@ -62,6 +61,7 @@ export default function TruePage({ data }) {
         createColumn('traverse', 'Traverse'),
         createColumn('twoRobot', 'Two Robots'),
         createColumn('droppedHit', 'Dropped When Hit'),
+        createColumn('id', 'id', 60),
     ], [])
 
     const selectedTeams = Object.keys(rowSelection).filter(row => {
@@ -84,6 +84,7 @@ export default function TruePage({ data }) {
         onRowSelectionChange: setRowSelection,
         state: { rowSelection },
         enableGrouping: true,
+        enableColumnPinning: true,
         initialState: {
             expanded: false,
             pagination: { pageIndex: 0, pageSize: 20 },
@@ -93,7 +94,9 @@ export default function TruePage({ data }) {
                     id: 'totalGamePieces',
                     desc: true
                 }
-            ]
+            ],
+            density: 'compact',
+            columnPinning: { left: ['teamNum'] }
         },
         renderBottomToolbarCustomActions: ({ table }) => {
             return (

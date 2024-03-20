@@ -34,7 +34,6 @@ export default function TruePage({ teamsData }) {
     }
 
     if (teamsData) {
-        console.log(getAllMatchNumsNormalized())
         return (
             <>
                 <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ marginTop: '0.5rem' }}>
