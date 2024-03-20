@@ -1,5 +1,5 @@
 'use client'
-import { Button, Tooltip } from '@mui/material'
+import { Box, Button, Tooltip } from '@mui/material'
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import React, { useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation';
@@ -10,9 +10,6 @@ const createColumn = (accessorKey, header, size, extra) => {
     return { accessorKey, header, size, ...extra }
 }
 
-const createSummedColumn = (accessorKey, header, size, extra) => {
-    return { accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => <span>{cell.getValue()}</span>, }
-}
 
 export default function TruePage({ data }) {
     const [rowSelection, setRowSelection] = useState({})
@@ -31,6 +28,33 @@ export default function TruePage({ data }) {
         download(csvConfig)(csv)
     }
 
+    const getShade = (key, value) => {
+        const max = Math.max(...data.map(d => {
+            return d[key]
+        }))
+        const step = max / 4
+        if (value == 0) {
+            return
+        } else if (value < step) {
+            return 'hsl(147, 100%, 10%)'
+        } else if (value < step * 2) {
+            return 'hsl(147, 100%, 20%)'
+        } else if (value < step * 3) {
+            return 'hsl(147, 100%, 30%)'
+        } else {
+            return 'hsl(147, 100%, 40%)'
+        }
+    }
+
+    const createSummedColumn = (accessorKey, header, size, extra) => {
+        return {
+            accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => {
+                const shade = getShade(accessorKey, cell.getValue())
+                return <Box sx={{ background: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{cell.getValue()}</Box>
+            },
+        }
+    }
+
     const columns = useMemo(() => [
         createColumn('teamNum', 'Team Number', 80, {
             Cell: ({ renderedCellValue }) => (
@@ -43,9 +67,6 @@ export default function TruePage({ data }) {
             ),
         }),
         createSummedColumn('totalGamePieces', 'Total Game Pieces'),
-        createColumn('matchNum', 'Match Number', 120),
-        createColumn('startingPos', 'Starting Position', 150),
-        createColumn('leaveWing', 'Leave Wing'),
         createSummedColumn('spkrMade_atn', 'Speaker Made Autonomous', 150),
         createSummedColumn('spkrMissed_atn', 'Speaker Missed Autonomous', 150),
         createSummedColumn('ampMade_atn', 'Amp Made Autonomous', 150),
@@ -54,13 +75,16 @@ export default function TruePage({ data }) {
         createSummedColumn('spkrMissed_tp', 'Speaker Missed Teleoperated', 150),
         createSummedColumn('ampMade_tp', 'Amp Made Teleoperated', 150),
         createSummedColumn('ampMissed_tp', 'Amp Missed Teleoperated', 150),
-        createColumn('coopertition', 'Coopertition'),
         createColumn('climbLvl', 'Climb Level'),
-        createColumn('Mic', 'Microphone'),
         createColumn('trap', 'Trap'),
+        createColumn('coopertition', 'Coopertition'),
+        createColumn('Mic', 'Microphone'),
         createColumn('traverse', 'Traverse'),
         createColumn('twoRobot', 'Two Robots'),
         createColumn('droppedHit', 'Dropped When Hit'),
+        createColumn('matchNum', 'Match Number', 120),
+        createColumn('startingPos', 'Starting Position', 150),
+        createColumn('leaveWing', 'Leave Wing'),
         createColumn('id', 'id', 60),
     ], [])
 
