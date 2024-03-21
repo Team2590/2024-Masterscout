@@ -40,17 +40,32 @@ export default function TruePage({ data }) {
         const allAggregated = tempMap.values()
 
         const max = Math.max(...allAggregated)
+        if (max == 0) return
         const step = max / 4
-        if (value == 0) {
-            return 'hsl(5, 90%, 35%)'
-        } else if (value < step) {
-            return 'hsl(147, 100%, 10%)'
-        } else if (value < step * 2) {
-            return 'hsl(147, 100%, 20%)'
-        } else if (value < step * 3) {
-            return 'hsl(147, 100%, 30%)'
+        if (key.toLowerCase().includes('miss')) {
+            if (value == 0) {
+                return 'hsl(147, 100%, 40%)'
+            } else if (value < step) {
+                return 'hsl(147, 100%, 30%)'
+            } else if (value < step * 2) {
+                return 'hsl(147, 100%, 20%)'
+            } else if (value < step * 3) {
+                return 'hsl(147, 100%, 10%)'
+            } else {
+                return 'hsl(5, 90%, 40%)'
+            }
         } else {
-            return 'hsl(147, 100%, 37.5%)'
+            if (value == 0) {
+                return 'hsl(5, 90%, 35%)'
+            } else if (value < step) {
+                return 'hsl(147, 100%, 15%)'
+            } else if (value < step * 2) {
+                return 'hsl(147, 100%, 20%)'
+            } else if (value < step * 3) {
+                return 'hsl(147, 90%, 30%)'
+            } else {
+                return 'hsl(147, 87.5%, 40%)'
+            }
         }
     }
 
