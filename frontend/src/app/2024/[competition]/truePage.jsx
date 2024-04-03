@@ -1,10 +1,10 @@
 'use client'
-import { Box, Button, Tooltip } from '@mui/material'
-import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import React, { useMemo, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { download, generateCsv, mkConfig } from 'export-to-csv';
+import { Box, Button, Tooltip, Checkbox } from '@mui/material'
+import { MRT_TopToolbar, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { download, generateCsv, mkConfig } from 'export-to-csv'
 
 const createColumn = (accessorKey, header, size, extra) => {
     return { accessorKey, header, size, ...extra }
@@ -13,6 +13,8 @@ const createColumn = (accessorKey, header, size, extra) => {
 
 export default function TruePage({ data }) {
     const [rowSelection, setRowSelection] = useState({})
+    const [actualData, setActualData] = useState(data)
+    const [enableStickyHeader, setStickyHeader] = useState(false)
     const router = useRouter()
     const params = useParams()
 
@@ -123,8 +125,38 @@ export default function TruePage({ data }) {
 
     const isComparedDisabled = selectedTeams.length < 2
 
+    const toggleOnlyClimb = (e) => {
+        if (e.target.checked) {
+            const teams = new Set(data.map(d => {
+                return d.teamNum
+            }))
+            const teamsCanClimb = []
+            teams.forEach(team => {
+                const filtered = data.filter(({ teamNum }) => {
+                    return team == teamNum
+                }).map(({ climbLvl }) => {
+                    return climbLvl
+                })
+
+                if (filtered.includes('Climb')) teamsCanClimb.push(team)
+            })
+            const filteredData = data.filter(({ teamNum }) => {
+                return teamsCanClimb.some(team => team == teamNum)
+            })
+            setActualData(filteredData)
+        } else {
+            setActualData(() => {
+                return data
+            })
+        }
+    }
+
+    const toggleStickyHeader = (e) => {
+        setStickyHeader(e.target.checked)
+    }
+
     const table = useMaterialReactTable({
-        data,
+        data: actualData,
         columns,
         enableRowSelection: true,
         positionToolbarAlertBanner: 'none',
@@ -132,9 +164,11 @@ export default function TruePage({ data }) {
         state: { rowSelection },
         enableGrouping: true,
         enableColumnPinning: true,
+        enableFacetedValues: true,
+        enableStickyHeader,
         initialState: {
             expanded: false,
-            pagination: { pageIndex: 0, pageSize: 20 },
+            pagination: { pageIndex: 0, pageSize: 15 },
             grouping: ['teamNum'],
             sorting: [
                 {
@@ -145,10 +179,10 @@ export default function TruePage({ data }) {
             density: 'compact',
             columnPinning: { left: ['teamNum'] }
         },
-        renderBottomToolbarCustomActions: ({ table }) => {
+        renderTopToolbar: ({ table }) => {
             return (
-                <div>
-                    <Tooltip title='Download CSV'>
+                <div style={{ margin: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
                         <Button
                             onClick={() => handleExportData(table.getSelectedRowModel().rows)}
                             color='inherit'
@@ -157,19 +191,30 @@ export default function TruePage({ data }) {
                         >
                             Download CSV
                         </Button>
-                    </Tooltip>
-                    <Tooltip title='Compare'>
-                        <Button
-                            aria-label='compare'
-                            variant='contained'
-                            disabled={isComparedDisabled}
-                            color='inherit'
-                            onClick={compareTeams}
-                            sx={{ marginLeft: '1.5rem' }}
-                        >
-                            Compare
-                        </Button>
-                    </Tooltip >
+                        <span>
+                            <Button
+                                aria-label='compare'
+                                variant='contained'
+                                disabled={isComparedDisabled}
+                                color='inherit'
+                                onClick={compareTeams}
+                                sx={{ marginLeft: '1.5rem' }}
+                            >
+                                Compare
+                            </Button>
+                        </span>
+                        <Box sx={{ display: 'inline-flex', marginLeft: '1.5rem', alignItems: 'center' }}>
+                            <span>Only Climb</span>
+                            <Checkbox onChange={toggleOnlyClimb} />
+                        </Box>
+                        <Box sx={{ display: 'inline-flex', marginLeft: '0.75rem', alignItems: 'center' }}>
+                            <span>Sticky Header</span>
+                            <Checkbox onChange={toggleStickyHeader} />
+                        </Box>
+                    </div>
+                    <div style={{ minWidth: 216 }}>
+                        <MRT_TopToolbar table={table} />
+                    </div>
                 </div>
             )
         }
@@ -177,7 +222,7 @@ export default function TruePage({ data }) {
 
     return (
         <>
-            <MaterialReactTable table={table} />
+            <MaterialReactTable table={table} muiTableContainerProps={{ sx: { maxHeight: '100px' } }} />
         </>
     )
 }

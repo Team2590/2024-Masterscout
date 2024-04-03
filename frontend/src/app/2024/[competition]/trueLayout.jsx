@@ -1,10 +1,10 @@
 'use client'
 import { AppBar, Box, Drawer, IconButton, List, ListItem, ListItemButton, Toolbar, Tooltip } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu'
 import { red } from '@mui/material/colors'
 import Link from 'next/link'
 import React, { Suspense, useState } from 'react'
-import Loading from '@/app/loading';
+import Loading from '@/app/loading'
 
 export default function TrueLayout({ children, params }) {
     const [drawerState, setDrawerState] = useState(false)

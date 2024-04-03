@@ -1,18 +1,18 @@
 'use client'
 import { Autocomplete, Container, TextField, Snackbar, IconButton, Box } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close';
-import { Search } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close'
+import { Search } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
 import React, { useLayoutEffect, useState } from 'react'
-import Loading from '@/app/loading';
-import useSWR from 'swr';
-import { fetcher } from '@/util/fetchers';
+import Loading from '@/app/loading'
+import useSWR from 'swr'
+import { fetcher } from '@/util/fetchers'
 
 export default function Page({ params }) {
     const router = useRouter()
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([])
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
 
     useLayoutEffect(() => {

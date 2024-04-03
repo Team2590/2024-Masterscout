@@ -238,4 +238,17 @@ export class TeamDataUtil2024 {
             return val += this.getSpeakerTeleopScores()[i]
         })
     }
+
+    getTotalNumOfMatches() {
+        return this.data.length
+    }
+
+    canClimb() {
+        const cimbLvls = this.data.map(({ climbLvl }) => {
+            return climbLvl
+        })
+
+        if (cimbLvls.includes('Climb')) return true
+        else return false
+    }
 }

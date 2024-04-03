@@ -2,12 +2,12 @@
 import Loading from '@/app/loading'
 import { fetcher } from '@/util/fetchers'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
 import { TableContainer, Paper, TableHead, Table, TableCell, TableBody, TableRow, Box, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import useSWR from 'swr'
-import { BarChart, LineChart } from '@mui/x-charts';
+import { BarChart, LineChart } from '@mui/x-charts'
 
 export default function Page({ params }) {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${params.team}`, fetcher)
@@ -23,15 +23,16 @@ export default function Page({ params }) {
                 </Tabs>
                 {tabIndex == 0 && (
                     <>
-                        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
-                            <h1 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '-1rem' }}>{decodeURI(params.team)}</h1>
-                            <p style={{ textAlign: 'center', fontSize: '1.25rem' }}>Total Game Pieces: {teamData.getTotalGamePieces()}</p>
+                        <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', textAlign: 'center' }}>
+                            <h1 style={{ fontSize: '2rem', marginBottom: '-1rem' }}>{decodeURI(params.team)}</h1>
+                            <p style={{ fontSize: '1.25rem' }}>Total Game Pieces: {teamData.getTotalGamePieces()}</p>
+                            <p style={{ fontSize: '1.25rem', marginTop: 0 }}>Can Climb: {teamData.canClimb() ? 'Yes' : 'No'}</p>
                             {/* <img src='https://placehold.co/400x400' style={{
-                        borderRadius: '0.25rem',
-                        height: '400',
-                        width: '400',
-                        margin: 'auto'
-                    }} /> */}
+                                borderRadius: '0.25rem',
+                                height: '400',
+                                width: '400',
+                                margin: 'auto'
+                            }} /> */}
                         </div>
                         <div style={{ marginInline: 'auto' }}>
                             <h2 style={{ textAlign: 'center' }}>Amp</h2>
@@ -162,82 +163,85 @@ export default function Page({ params }) {
                             </TableContainer>
                         </div>
                     </>
-                )}
-                {tabIndex == 1 && (
-                    <>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Averages</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: ['Avg Spkr Auto', 'Avg Spkr Tele', 'Avg Amp Auto', 'Avg Amp Tele'] }]}
-                                    series={[{ data: [teamData.getAvgSpeakerAtn(), teamData.getAvgSpeakerTp(), teamData.getAvgAmpAtn(), teamData.getAvgAmpTp()] }]}
-                                    width={500}
-                                    height={300}
-                                />
+                )
+                }
+                {
+                    tabIndex == 1 && (
+                        <>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Averages</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: ['Avg Spkr Auto', 'Avg Spkr Tele', 'Avg Amp Auto', 'Avg Amp Tele'] }]}
+                                        series={[{ data: [teamData.getAvgSpeakerAtn(), teamData.getAvgSpeakerTp(), teamData.getAvgAmpAtn(), teamData.getAvgAmpTp()] }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Amp Auto Scores per Match</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                    series={[{ data: teamData.getAmpAutoScores() }]}
-                                    width={500}
-                                    height={300}
-                                />
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Amp Auto Scores per Match</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getAmpAutoScores() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Amp Teleoperated Scores per Match</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getAmpTeleopScores() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
                             </Box>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Amp Teleoperated Scores per Match</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                    series={[{ data: teamData.getAmpTeleopScores() }]}
-                                    width={500}
-                                    height={300}
-                                />
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Speaker Auto Scores per Match</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getSpeakerAutoScores() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Speaker Teleoperated Scores per Match</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getSpeakerTeleopScores() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Speaker Auto Scores per Match</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                    series={[{ data: teamData.getSpeakerAutoScores() }]}
-                                    width={500}
-                                    height={300}
-                                />
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Total Amp Scores per Match</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getTotalAmpScores() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
+                                <Box width='fit-content'>
+                                    <Typography variant='h5' textAlign='center'>Total Speaker Scores per Match</Typography>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getTotalSpeakerScores() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </Box>
                             </Box>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Speaker Teleoperated Scores per Match</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                    series={[{ data: teamData.getSpeakerTeleopScores() }]}
-                                    width={500}
-                                    height={300}
-                                />
-                            </Box>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Total Amp Scores per Match</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                    series={[{ data: teamData.getTotalAmpScores() }]}
-                                    width={500}
-                                    height={300}
-                                />
-                            </Box>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Total Speaker Scores per Match</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                    series={[{ data: teamData.getTotalSpeakerScores() }]}
-                                    width={500}
-                                    height={300}
-                                />
-                            </Box>
-                        </Box>
-                    </>
-                )}
+                        </>
+                    )
+                }
             </>
         )
     } else {

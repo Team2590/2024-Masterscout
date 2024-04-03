@@ -7,7 +7,7 @@ import { Box, Divider, Paper, Tab, Table, TableBody, TableCell, TableContainer, 
 import { BarChart } from '@mui/x-charts'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 export default function TruePage({ teamsData }) {
     const params = useParams()
@@ -33,20 +33,6 @@ export default function TruePage({ teamsData }) {
         return new Array(Math.max(...getAllMatchNums())).fill(0).map((val, index) => { return index })
     }
 
-    const getMaxMatches = () => {
-        const teamsNumOfMatches = teamsDataUtil.map(teamData => {
-            return teamData.getTotalNumOfMatches()
-        })
-
-        return Math.max(...teamsNumOfMatches)
-    }
-
-    const getMaxMatchesAsArray = () => {
-        return new Array(getMaxMatches()).fill(0).map((_, index) => {
-            return `${index + 1}`
-        })
-    }
-
     if (teamsData) {
         return (
             <>
@@ -62,7 +48,6 @@ export default function TruePage({ teamsData }) {
                                     <TableRow>
                                         <TableCell align='center'>Team</TableCell>
                                         <TableCell align='center'>Total Game Pieces</TableCell>
-                                        <TableCell align='center'>Can Climb</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -79,7 +64,6 @@ export default function TruePage({ teamsData }) {
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align='center'>{teamData.getTotalGamePieces()}</TableCell>
-                                                <TableCell align='center'>{teamData.canClimb() ? 'Yes' : 'No'}</TableCell>
                                             </TableRow>
                                         )
                                     })}
@@ -250,47 +234,22 @@ export default function TruePage({ teamsData }) {
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
                             <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Amp Auto Scores per Game</Typography>
+                                <Typography variant='h5' textAlign='center'>Amp Auto Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getAmpAutoScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getAmpAutoScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
                                 />
                             </Box>
                             <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Amp Teleoperated Scores per Game</Typography>
+                                <Typography variant='h5' textAlign='center'>Amp Teleoperated Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getAmpTeleopScores(), label: String(teamData.data[0].teamNum) }
-                                    })}
-                                    width={500}
-                                    height={300}
-                                />
-                            </Box>
-                        </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Speaker Auto Scores per Game</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
-                                    series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getSpeakerAutoScores(), label: String(teamData.data[0].teamNum) }
-                                    })}
-                                    layout='vertical'
-                                    width={500}
-                                    height={300}
-                                />
-                            </Box>
-                            <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Speaker Teleoperated Scores per Game</Typography>
-                                <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
-                                    series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getSpeakerTeleopScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getAmpTeleopScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -299,22 +258,46 @@ export default function TruePage({ teamsData }) {
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
                             <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Total Amp Scores per Game</Typography>
+                                <Typography variant='h5' textAlign='center'>Speaker Auto Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNums() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getTotalAmpScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getSpeakerAutoScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
                                 />
                             </Box>
                             <Box width='fit-content'>
-                                <Typography variant='h5' textAlign='center'>Total Speaker Scores per Game</Typography>
+                                <Typography variant='h5' textAlign='center'>Speaker Teleoperated Scores per Match</Typography>
                                 <BarChart
-                                    xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNums() }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getTotalSpeakerScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getSpeakerTeleopScores()), label: String(teamData.data[0].teamNum) }
+                                    })}
+                                    width={500}
+                                    height={300}
+                                />
+                            </Box>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+                            <Box width='fit-content'>
+                                <Typography variant='h5' textAlign='center'>Total Amp Scores per Match</Typography>
+                                <BarChart
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
+                                    series={teamsDataUtil.map(teamData => {
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getTotalAmpScores()), label: String(teamData.data[0].teamNum) }
+                                    })}
+                                    width={500}
+                                    height={300}
+                                />
+                            </Box>
+                            <Box width='fit-content'>
+                                <Typography variant='h5' textAlign='center'>Total Speaker Scores per Match</Typography>
+                                <BarChart
+                                    xAxis={[{ scaleType: 'band', data: getAllMatchNumsNormalized() }]}
+                                    series={teamsDataUtil.map(teamData => {
+                                        return { data: normalizeTeamData(getAllMatchNums(), teamData.getMatchNums(), teamData.getTotalSpeakerScores()), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
