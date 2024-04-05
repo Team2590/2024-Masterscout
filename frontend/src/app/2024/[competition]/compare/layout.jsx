@@ -24,10 +24,10 @@ export default function Layout({ children }) {
         )
     } else if (teamData.data) {
         const options = Array.from(new Set(teamData.data.map(({ teamNum }) => {
-            // const id = teamData.data.findIndex(a => a.teamNum == teamNum)
-            // return { label: teamNum.toString(), id }
+            if (teamNum == null || teamNum == undefined || isNaN(Number(teamNum))) return 0
             return teamNum
         })))
+        console.log(options)
         const defaultValue = Array.from(new Set(params.teams))
         return (
             <>
