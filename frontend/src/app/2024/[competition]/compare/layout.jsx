@@ -1,5 +1,6 @@
 'use client'
 import { fetcher } from '@/util/fetchers'
+import { optionIsValid } from '@/util/optionIsValid'
 import { Search } from '@mui/icons-material'
 import { Box, CircularProgress, Autocomplete, TextField } from '@mui/material'
 import { useParams, useRouter } from 'next/navigation'
