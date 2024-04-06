@@ -166,6 +166,7 @@ export default function TruePage({ data }) {
         enableColumnPinning: true,
         enableFacetedValues: true,
         enableStickyHeader,
+        enableMultiSort: true,
         initialState: {
             expanded: false,
             pagination: { pageIndex: 0, pageSize: 15 },
@@ -191,18 +192,25 @@ export default function TruePage({ data }) {
                         >
                             Download CSV
                         </Button>
-                        <span>
-                            <Button
-                                aria-label='compare'
-                                variant='contained'
-                                disabled={isComparedDisabled}
-                                color='inherit'
-                                onClick={compareTeams}
-                                sx={{ marginLeft: '1.5rem' }}
-                            >
-                                Compare
-                            </Button>
-                        </span>
+                        <Button
+                            aria-label='compare'
+                            variant='contained'
+                            color='inherit'
+                            onClick={() => table.resetSorting(true)}
+                            sx={{ marginLeft: '1.5rem' }}
+                        >
+                            Reset Sorting
+                        </Button>
+                        <Button
+                            aria-label='compare'
+                            variant='contained'
+                            disabled={isComparedDisabled}
+                            color='inherit'
+                            onClick={compareTeams}
+                            sx={{ marginLeft: '1.5rem' }}
+                        >
+                            Compare
+                        </Button>
                         <Box sx={{ display: 'inline-flex', marginLeft: '1.5rem', alignItems: 'center' }}>
                             <span>Only Climb</span>
                             <Checkbox onChange={toggleOnlyClimb} />
