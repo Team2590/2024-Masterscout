@@ -82,12 +82,12 @@ export default function TruePage({ data }) {
 
     const columns = useMemo(() => [
         createColumn('teamNum', 'Team Number', 80, {
-            Cell: ({ renderedCellValue }) => (
+            Cell: ({ cell }) => (
                 <Link
-                    href={`/2024/${params.competition}/teams/${renderedCellValue}`}
+                    href={`/2024/${params.competition}/teams/${cell.getValue()}`}
                     style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                    {renderedCellValue}
+                    {cell.getValue()}
                 </Link>
             ),
         }),
@@ -145,9 +145,7 @@ export default function TruePage({ data }) {
             })
             setActualData(filteredData)
         } else {
-            setActualData(() => {
-                return data
-            })
+            setActualData(data)
         }
     }
 
