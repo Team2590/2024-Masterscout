@@ -7,6 +7,7 @@ import React, { useLayoutEffect, useState } from 'react'
 import Loading from '@/app/loading'
 import useSWR from 'swr'
 import { fetcher } from '@/util/fetchers'
+import { optionIsValid } from '@/util/optionIsValid';
 
 export default function Page({ params }) {
     const router = useRouter()
@@ -17,10 +18,10 @@ export default function Page({ params }) {
 
     useLayoutEffect(() => {
         if (data) {
-            setOptions(data.map(({ teamNum }) => {
-                const id = data.findIndex(a => a.teamNum == teamNum)
-                return { label: teamNum.toString(), id }
-            }))
+            setOptions(Array.from(new Set(data.map(({ teamNum }) => {
+                if (!optionIsValid(teamNum)) return 0
+                return teamNum
+            }))))
         }
     }, [data])
 

@@ -24,7 +24,7 @@ export default function Layout({ children }) {
         )
     } else if (teamData.data) {
         const options = Array.from(new Set(teamData.data.map(({ teamNum }) => {
-            if (teamNum == null || teamNum == undefined || isNaN(Number(teamNum))) return 0
+            if (!optionIsValid(teamNum)) return 0
             return teamNum
         })))
         console.log(options)
