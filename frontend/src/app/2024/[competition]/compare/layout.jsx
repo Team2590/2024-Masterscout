@@ -1,5 +1,6 @@
 'use client'
 import { fetcher } from '@/util/fetchers'
+import { getOptions } from '@/util/getOptions'
 import { optionIsValid } from '@/util/optionIsValid'
 import { Search } from '@mui/icons-material'
 import { Box, CircularProgress, Autocomplete, TextField } from '@mui/material'
@@ -24,10 +25,7 @@ export default function Layout({ children }) {
             </div>
         )
     } else if (teamData.data) {
-        const options = Array.from(new Set(teamData.data.map(({ teamNum }) => {
-            if (!optionIsValid(teamNum)) return 0
-            return teamNum
-        })))
+        const options = getOptions(teamData.data)
         console.log(options)
         const defaultValue = Array.from(new Set(params.teams))
         return (
