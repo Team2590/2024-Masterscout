@@ -5,13 +5,16 @@ import { optionIsValid } from '@/util/optionIsValid'
 import { Search } from '@mui/icons-material'
 import { Box, CircularProgress, Autocomplete, TextField } from '@mui/material'
 import { useParams, useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState, createContext } from 'react'
 import useSWR from 'swr'
+
+export const TabsIndexContext = createContext(0)
 
 export default function Layout({ children }) {
     const params = useParams()
     const router = useRouter()
     const teamData = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
+    const [tabsIndex, setTabsIndex] = useState(0)
 
     const handleSubmit = (e, value) => {
         e.preventDefault()
@@ -29,10 +32,11 @@ export default function Layout({ children }) {
         console.log(options)
         const defaultValue = Array.from(new Set(params.teams))
         return (
-            <>
+            <TabsIndexContext.Provider value={[tabsIndex, setTabsIndex]}>
                 <Autocomplete
                     multiple
                     disablePortal
+                    freeSolo
                     id="combo-box-demo"
                     options={options}
                     sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
@@ -46,7 +50,7 @@ export default function Layout({ children }) {
                     }
                 />
                 {children}
-            </>
+            </TabsIndexContext.Provider>
         )
     } else {
         return (

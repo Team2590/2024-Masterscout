@@ -5,14 +5,15 @@ import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { TableContainer, Paper, TableHead, Table, TableCell, TableBody, TableRow, Box, Typography } from '@mui/material'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
 import useSWR from 'swr'
 import { BarChart, LineChart } from '@mui/x-charts'
 import NotFound from '@/app/not-found'
+import { TabsIndexContext } from '../layout.jsx'
 
 export default function Page({ params }) {
     const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/${params.team}`, fetcher)
-    const [tabIndex, setTabIndex] = useState(0)
+    const [tabIndex, setTabIndex] = useContext(TabsIndexContext)
 
     if (data) {
         const teamData = new TeamDataUtil2024(data)

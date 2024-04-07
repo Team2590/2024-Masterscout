@@ -1,13 +1,12 @@
 'use client'
 import Loading from '@/app/loading'
-import { combine } from '@/util/combine'
-import { normalizeTeamData } from '@/util/normalizeTeamsData'
 import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
-import { Box, Divider, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material'
+import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material'
 import { BarChart } from '@mui/x-charts'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useContext } from 'react'
+import { TabsIndexContext } from '../layout'
 
 export default function TruePage({ teamsData }) {
     const params = useParams()
@@ -16,7 +15,7 @@ export default function TruePage({ teamsData }) {
             return new TeamDataUtil2024(team)
         })
     }, [teamsData])
-    const [tabIndex, setTabIndex] = useState(0)
+    const [tabIndex, setTabIndex] = useContext(TabsIndexContext)
 
     const getAllMatchNums = () => {
         if (teamsDataUtil) {
