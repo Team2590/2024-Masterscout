@@ -3,7 +3,7 @@ import { fetcher } from '@/util/fetchers'
 import { getOptions } from '@/util/getOptions'
 import { optionIsValid } from '@/util/optionIsValid'
 import { Search } from '@mui/icons-material'
-import { Box, CircularProgress, Autocomplete, TextField } from '@mui/material'
+import { Box, CircularProgress, Autocomplete, TextField, Container } from '@mui/material'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useState, createContext } from 'react'
 import useSWR from 'swr'
@@ -33,22 +33,23 @@ export default function Layout({ children }) {
         const defaultValue = Array.from(new Set(params.teams))
         return (
             <TabsIndexContext.Provider value={[tabsIndex, setTabsIndex]}>
-                <Autocomplete
-                    multiple
-                    disablePortal
-                    freeSolo
-                    id="combo-box-demo"
-                    options={options}
-                    sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
-                    onChange={handleSubmit}
-                    defaultValue={defaultValue}
-                    renderInput={(params) =>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Search sx={{ color: 'action.active', mr: 1, mt: 2 }} />
-                            <TextField {...params} label="Teams" variant='standard' />
-                        </Box>
-                    }
-                />
+                <Container sx={{ marginBottom: '1rem' }}>
+                    <Autocomplete
+                        multiple
+                        disablePortal
+                        freeSolo
+                        options={options}
+                        sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
+                        onChange={handleSubmit}
+                        defaultValue={defaultValue}
+                        renderInput={(params) =>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Search sx={{ color: 'action.active', mr: 1, mt: 2 }} />
+                                <TextField {...params} label="Teams" variant='standard' />
+                            </Box>
+                        }
+                    />
+                </Container>
                 {children}
             </TabsIndexContext.Provider>
         )

@@ -226,7 +226,7 @@ export default function Page({ params }) {
                                     <Typography variant='h5' textAlign='center'>Total Amp Scores per Match</Typography>
                                     <BarChart
                                         xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                        series={[{ data: teamData.getTotalAmpScores() }]}
+                                        series={[{ data: teamData.getAllAmpScores() }]}
                                         width={500}
                                         height={300}
                                     />
@@ -235,7 +235,7 @@ export default function Page({ params }) {
                                     <Typography variant='h5' textAlign='center'>Total Speaker Scores per Match</Typography>
                                     <BarChart
                                         xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
-                                        series={[{ data: teamData.getTotalSpeakerScores() }]}
+                                        series={[{ data: teamData.getAllSpeakerScores() }]}
                                         width={500}
                                         height={300}
                                     />

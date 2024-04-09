@@ -5,183 +5,171 @@ export class TeamDataUtil2024 {
         this.data = data
     }
 
+    #getAverage(key) {
+        return parseFloat(combine.objPropNums(this.data, key) / this.data.length).toFixed(2)
+    }
+
+    #getTotal(key) {
+        return combine.objPropNums(this.data, key)
+    }
+
+    #getAccuracy(location, time) {
+        const missed = combine.objPropNums(this.data, `${location}Missed_${time}`)
+        const scored = this.#getTotal(`${location}Made_${time}`)
+        console.log(`${location}Made_${time}`)
+        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
+        if (isNaN(accuracy)) {
+            return 0
+        } else {
+            return accuracy
+        }
+    }
+
+    #getMin(key) {
+        return Math.min(...(combine.objPropNumsToArr(this.data, key)))
+    }
+
+    #getMinAmpAtnGtr0(key) {
+        if (this.#getMin(key) == 0) {
+            const scores = combine.objPropNumsToArr(this.data, key)
+            scores.sort((a, b) => a - b)
+            return scores[1]
+        } else {
+            return this.#getMin(key)
+        }
+    }
+
+    #getLast(key) {
+        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
+        return sorted[sorted.length - 1][key]
+    }
+
+    #getScores(key) {
+        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
+            return d[key]
+        })
+    }
+
+    #getEfficiency(location, time) {
+        const scored = this.#getTotal(`${location}Made_${time}`)
+        const missed = this.#getTotal(`${location}Missed_${time}`)
+        return parseFloat(scored / missed).toFixed(2)
+    }
+
     getAvgAmpAtn() {
-        return parseFloat(combine.objPropNums(this.data, 'ampMade_atn') / this.data.length).toFixed(2)
+        return this.#getAverage('ampMade_atn')
     }
 
     getAvgSpeakerAtn() {
-        return parseFloat(combine.objPropNums(this.data, 'ampMade_tp') / this.data.length).toFixed(2)
+        return this.#getAverage('ampMade_tp')
     }
 
     getAvgAmpTp() {
-        return parseFloat(combine.objPropNums(this.data, 'ampMade_tp') / this.data.length).toFixed(2)
+        return this.#getAverage('ampMade_tp')
     }
 
     getAvgSpeakerTp() {
-        return parseFloat(combine.objPropNums(this.data, 'spkrMade_tp') / this.data.length).toFixed(2)
+        return this.#getAverage('spkrMade_tp')
     }
 
     getAvgTrap() {
-        return parseFloat(combine.objPropNums(this.data, 'trap') / this.data.length).toFixed(2)
+        return this.#getAverage('trap')
     }
 
     getTotalAmpAtn() {
-        return combine.objPropNums(this.data, 'ampMade_atn')
+        return this.#getTotal('ampMade_atn')
     }
 
     getTotalSpeakerAtn() {
-        return combine.objPropNums(this.data, 'spkrMade_atn')
+        return this.#getTotal('spkrMade_atn')
     }
 
     getTotalAmpTp() {
-        return combine.objPropNums(this.data, 'ampMade_tp')
+        return this.#getTotal('ampMade_tp')
     }
 
     getTotalSpeakerTp() {
-        return combine.objPropNums(this.data, 'spkrMade_tp')
+        return this.#getTotal('spkrMade_tp')
     }
 
     getTotalTrap() {
-        return combine.objPropNums(this.data, 'trap')
+        return this.#getTotal('trap')
     }
 
     getAccuracyAmpAtn() {
-        const missed = combine.objPropNums(this.data, 'ampMissed_atn')
-        const scored = this.getTotalAmpAtn()
-        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (isNaN(accuracy)) {
-            return 0
-        } else {
-            return accuracy
-        }
+        return this.#getAccuracy('amp', 'atn')
     }
 
     getAccuracySpeakerAtn() {
-        const missed = combine.objPropNums(this.data, 'spkrMissed_atn')
-        const scored = this.getTotalSpeakerAtn()
-        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (isNaN(accuracy)) {
-            return 0
-        } else {
-            return accuracy
-        }
+        return this.#getAccuracy('spkr', 'atn')
     }
 
     getAccuracyAmpTp() {
-        const missed = combine.objPropNums(this.data, 'ampMissed_tp')
-        const scored = this.getTotalAmpTp()
-        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (isNaN(accuracy)) {
-            return 0
-        } else {
-            return accuracy
-        }
+        return this.#getAccuracy('amp', 'tp')
     }
 
     getAccuracySpeakerTp() {
-        const missed = combine.objPropNums(this.data, 'spkrMissed_tp')
-        const scored = this.getTotalSpeakerTp()
-        const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
-        if (isNaN(accuracy)) {
-            return 0
-        } else {
-            return accuracy
-        }
+        return this.#getAccuracy('spkr', 'tp')
     }
 
     getMinAmpAtn() {
-        return Math.min(...(combine.objPropNumsToArr(this.data, 'ampMade_atn')))
+        return this.#getMin('ampMade_atn')
     }
 
     getMinSpeakerAtn() {
-        return Math.min(...(combine.objPropNumsToArr(this.data, 'spkrMade_atn')))
+        return this.#getMin('spkrMade_atn')
     }
 
     getMinAmpTp() {
-        return Math.min(...(combine.objPropNumsToArr(this.data, 'ampMade_tp')))
+        return this.#getMin('ampMade_tp')
     }
 
     getMinSpeakerTp() {
-        return Math.min(...(combine.objPropNumsToArr(this.data, 'spkrMade_tp')))
+        return this.#getMin('spkrMade_tp')
     }
 
     getMinTrap() {
-        return Math.min(...(combine.objPropNumsToArr(this.data, 'trap')))
+        return this.#getMin('trap')
     }
 
     getMinAmpAtnGtr0() {
-        if (this.getMinAmpAtn() == 0) {
-            const scores = combine.objPropNumsToArr(this.data, 'ampMade_atn')
-            scores.sort((a, b) => a - b)
-            return scores[1]
-        } else {
-            return this.getMinAmpAtn()
-        }
+        return this.#getMinAmpAtnGtr0('ampMade_atn')
     }
 
     getMinSpeakerAtnGtr0() {
-        if (this.getMinSpeakerAtn() == 0) {
-            const scores = combine.objPropNumsToArr(this.data, 'spkrMade_atn')
-            scores.sort((a, b) => a - b)
-            return scores[1]
-        } else {
-            return this.getMinSpeakerAtn()
-        }
+        return this.#getMinAmpAtnGtr0('spkrMade_atn')
     }
 
     getMinAmpTpGtr0() {
-        if (this.getMinAmpTp() == 0) {
-            const scores = combine.objPropNumsToArr(this.data, 'ampMade_tp')
-            scores.sort((a, b) => a - b)
-            return scores[1]
-        } else {
-            return this.getMinAmpTp()
-        }
+        return this.#getMinAmpAtnGtr0('ampMade_tp')
     }
 
     getMinSpeakerTpGtr0() {
-        if (this.getMinSpeakerTp() == 0) {
-            const scores = combine.objPropNumsToArr(this.data, 'spkrMade_tp')
-            scores.sort((a, b) => a - b)
-            return scores[1]
-        } else {
-            return this.getMinSpeakerTp()
-        }
+        return this.#getMinAmpAtnGtr0('spkrMade_tp')
     }
 
     getMinTrapGtr0() {
-        if (this.getMinTrap() == 0) {
-            const scores = combine.objPropNumsToArr(this.data, 'trap')
-            scores.sort((a, b) => a - b)
-            return scores[1]
-        } else {
-            return this.getMinTrap()
-        }
+        return this.#getMinAmpAtnGtr0('trap')
     }
 
     getLastAmpAtn() {
-        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
-        return sorted[sorted.length - 1].ampMade_atn
+        return this.#getLast('ampMade_atn')
     }
 
     getLastSpeakerAtn() {
-        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
-        return sorted[sorted.length - 1].spkrMade_atn
+        return this.#getLast('spkrMade_atn')
     }
 
     getLastAmpTp() {
-        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
-        return sorted[sorted.length - 1].ampMade_tp
+        return this.#getLast('ampMade_tp')
     }
 
     getLastSpeakerTp() {
-        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
-        return sorted[sorted.length - 1].spkrMade_tp
+        return this.#getLast('spkrMade_tp')
     }
 
     getLastTrap() {
-        const sorted = this.data.sort((a, b) => a.matchNum - b.matchNum)
-        return sorted[sorted.length - 1].trap
+        return this.#getLast('trap')
     }
 
     getTotalGamePieces() {
@@ -204,36 +192,28 @@ export class TeamDataUtil2024 {
     }
 
     getAmpAutoScores() {
-        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
-            return d.ampMade_atn
-        })
+        return this.#getScores('ampMade_atn')
     }
 
     getAmpTeleopScores() {
-        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
-            return d.ampMade_tp
-        })
+        return this.#getScores('ampMade_tp')
     }
 
     getSpeakerAutoScores() {
-        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
-            return d.spkrMade_atn
-        })
+        return this.#getScores('spkrMade_atn')
     }
 
     getSpeakerTeleopScores() {
-        return this.data.sort((a, b) => a.matchNum - b.matchNum).map(d => {
-            return d.spkrMade_tp
-        })
+        return this.#getScores('spkrMade_tp')
     }
 
-    getTotalAmpScores() {
+    getAllAmpScores() {
         return this.getAmpAutoScores().map((val, i) => {
             return val += this.getAmpTeleopScores()[i]
         })
     }
 
-    getTotalSpeakerScores() {
+    getAllSpeakerScores() {
         return this.getSpeakerAutoScores().map((val, i) => {
             return val += this.getSpeakerTeleopScores()[i]
         })
@@ -241,6 +221,22 @@ export class TeamDataUtil2024 {
 
     getTotalNumOfMatches() {
         return this.data.length
+    }
+
+    getSpkrAutoEff() {
+        return this.#getEfficiency('spkr', 'auto')
+    }
+
+    getSpkrTeleopEff() {
+        return this.#getEfficiency('spkr', 'teleop')
+    }
+
+    getAmpAutoEff() {
+        return this.#getEfficiency('amp', 'auto')
+    }
+
+    getAmpTeleopEff() {
+        return this.#getEfficiency('amp', 'teleop')
     }
 
     canClimb() {

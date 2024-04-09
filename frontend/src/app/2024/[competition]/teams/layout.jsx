@@ -2,7 +2,7 @@
 import { Autocomplete, Container, TextField, Snackbar, IconButton, Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Search } from '@mui/icons-material'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import React, { useLayoutEffect, useState, createContext } from 'react'
 import Loading from '@/app/loading'
 import useSWR from 'swr'
@@ -12,8 +12,9 @@ import { getOptions } from '@/util/getOptions'
 
 export const TabsIndexContext = createContext(0)
 
-export default function Layout({ params, children }) {
+export default function Layout({ children }) {
     const router = useRouter()
+    const params = useParams()
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
     const [options, setOptions] = useState([])
@@ -24,6 +25,7 @@ export default function Layout({ params, children }) {
         if (data) {
             setOptions(getOptions(data))
         }
+        console.log(params)
     }, [data])
 
     const handleSubmit = (e, value) => {
@@ -43,11 +45,11 @@ export default function Layout({ params, children }) {
 
     return (
         <TabsIndexContext.Provider value={[tabIndex, setTabIndex]}>
-            <Container>
+            <Container sx={{marginBottom: '1rem'}}>
                 <Autocomplete
                     disablePortal
                     freeSolo
-                    id="combo-box-demo"
+                    value={params.team}
                     options={options}
                     sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
                     onChange={handleSubmit}
@@ -58,7 +60,7 @@ export default function Layout({ params, children }) {
                             <TextField {...params} label="Team" variant='standard' />
                         </Box>
                     }
-                />
+                    />
                 <Snackbar
                     open={error}
                     autoHideDuration={6000}
@@ -66,15 +68,15 @@ export default function Layout({ params, children }) {
                     message="Error, team not in competition"
                     action={
                         <IconButton
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick={() => setError(false)}
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={() => setError(false)}
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
                     }
-                />
+                    />
             </Container>
             {children}
         </TabsIndexContext.Provider>

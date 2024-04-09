@@ -50,8 +50,8 @@ export default function TruePage({ teamsData }) {
         return (
             <>
                 <Tabs value={tabIndex} onChange={(e, val) => setTabIndex(val)} sx={{ marginTop: '0.5rem' }}>
-                    <Tab label='Tables' sx={{ marginInline: 'auto', width: '100%' }} />
-                    <Tab label='Charts' sx={{ marginInline: 'auto', width: '100%' }} />
+                    <Tab label='Tables' sx={{ marginInline: 'auto', width: '50vw' }} />
+                    <Tab label='Charts' sx={{ marginInline: 'auto', width: '50vw' }} />
                 </Tabs>
                 {tabIndex == 0 && (
                     <>
@@ -302,7 +302,7 @@ export default function TruePage({ teamsData }) {
                                 <BarChart
                                     xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getTotalAmpScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: teamData.getAllAmpScores(), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
@@ -313,7 +313,7 @@ export default function TruePage({ teamsData }) {
                                 <BarChart
                                     xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
                                     series={teamsDataUtil.map(teamData => {
-                                        return { data: teamData.getTotalSpeakerScores(), label: String(teamData.data[0].teamNum) }
+                                        return { data: teamData.getAllSpeakerScores(), label: String(teamData.data[0].teamNum) }
                                     })}
                                     width={500}
                                     height={300}
