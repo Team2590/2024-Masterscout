@@ -29,6 +29,7 @@ export default function Page({ params }) {
                             <h1 style={{ fontSize: '2rem', marginBottom: '-1rem' }}>{decodeURI(params.team)}</h1>
                             <p style={{ fontSize: '1.25rem' }}>Total Game Pieces: {teamData.getTotalGamePieces()}</p>
                             <p style={{ fontSize: '1.25rem', marginTop: 0 }}>Can Climb: {teamData.canClimb() ? 'Yes' : 'No'}</p>
+                            <p style={{ fontSize: '1.25rem', marginTop: 0 }}>Notes Fed: {teamData.getTotalFed()}</p>
                             {/* <img src='https://placehold.co/400x400' style={{
                                 borderRadius: '0.25rem',
                                 height: '400',

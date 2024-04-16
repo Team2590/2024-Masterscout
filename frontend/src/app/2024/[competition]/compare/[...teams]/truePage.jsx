@@ -62,6 +62,7 @@ export default function TruePage({ teamsData }) {
                                         <TableCell align='center'>Team</TableCell>
                                         <TableCell align='center'>Total Game Pieces</TableCell>
                                         <TableCell align='center'>Can Climb</TableCell>
+                                        <TableCell align='center'>Notes Fed</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -79,6 +80,7 @@ export default function TruePage({ teamsData }) {
                                                 </TableCell>
                                                 <TableCell align='center'>{teamData.getTotalGamePieces()}</TableCell>
                                                 <TableCell align='center'>{teamData.canClimb() ? 'Yes' : 'No'}</TableCell>
+                                                <TableCell align='center'>{teamData.getTotalFed()}</TableCell>
                                             </TableRow>
                                         )
                                     })}

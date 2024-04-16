@@ -96,6 +96,15 @@ export class TeamDataUtil2024 {
         return this.#getTotal('trap')
     }
 
+    getTotalFed() {
+        const total = this.#getTotal('notesFed')
+        if (isNaN(total)) {
+            return 'N/A'
+        } else {
+            return this.#getTotal('notesFed')
+        }
+    }
+
     getAccuracyAmpAtn() {
         return this.#getAccuracy('amp', 'atn')
     }

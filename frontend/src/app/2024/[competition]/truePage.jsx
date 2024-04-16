@@ -1,15 +1,14 @@
 'use client'
 import { Box, Button, Tooltip, Checkbox } from '@mui/material'
 import { MRT_TopToolbar, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { download, generateCsv, mkConfig } from 'export-to-csv'
 
-const createColumn = (accessorKey, header, size, extra) => {
-    return { accessorKey, header, size, ...extra }
+const createColumn = (accessorKey, header, extra) => {
+    return { accessorKey, header, ...extra }
 }
-
 
 export default function TruePage({ data }) {
     const [rowSelection, setRowSelection] = useState({})
@@ -30,7 +29,7 @@ export default function TruePage({ data }) {
         download(csvConfig)(csv)
     }
 
-    const getShade = (key, value) => {
+    const getShade = useCallback((key, value) => {
         const tempMap = new Map()
         const temp = data.map(d => {
             return { teamNum: d.teamNum, value: d[key] }
@@ -42,8 +41,11 @@ export default function TruePage({ data }) {
         const allAggregated = tempMap.values()
 
         const max = Math.max(...allAggregated)
-        if (max == 0) return
+        const min = Math.min(...allAggregated)
+        const range = max - min
+        // if (max == 0) return
         const step = max / 4
+        if (key == 'spkrAtnAccuracy') console.log(step)
         if (key.toLowerCase().includes('miss')) {
             if (value == 0) {
                 return 'hsl(147, 100%, 40%)'
@@ -69,14 +71,63 @@ export default function TruePage({ data }) {
                 return 'hsl(147, 87.5%, 40%)'
             }
         }
-    }
+    }, [data])
 
-    const createSummedColumn = (accessorKey, header, size, extra) => {
+    const createSummedColumn = useCallback((accessorKey, header, size, extra) => {
         return {
             accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => {
                 const shade = getShade(accessorKey, cell.getValue())
                 return <Box sx={{ background: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{cell.getValue()}</Box>
             },
+        }
+    }, [actualData])
+
+    // const createAccuracyColumn = (accessorKey, header) => {
+    //     return {
+    //         accessorKey,
+    //         header,
+    //         AggregatedCell: ({ row, cell }) => {
+    //             const type = cell.column.id
+    //             const teamNum = row.original.teamNum
+    //             const teamData = data.filter(({ teamNum: num }) => {
+    //                 return num == teamNum
+    //             })
+    //             const getTotal = (key) => {
+    //                 return teamData.map(d => {
+    //                     return Number(d[key])
+    //                 }).reduce((total, num) => { return total += num }, 0)
+    //             }
+    //             let displayAccuracy
+    //             let totalScored
+    //             let totalMissed
+    //             if (type == 'spkrAtnAccuracy') {
+    //                 totalScored = getTotal('spkrMade_atn')
+    //                 totalMissed = getTotal('spkrMissed_atn')
+    //             } else if (type == 'spkrTpAccuracy') {
+    //                 totalScored = getTotal('spkrMade_tp')
+    //                 totalMissed = getTotal('spkrMissed_tp')
+    //             } else if (type == 'ampAtnAccuracy') {
+    //                 totalScored = getTotal('ampMade_atn')
+    //                 totalMissed = getTotal('ampMissed_atn')
+    //             } else if (type == 'ampTpAccuracy') {
+    //                 totalScored = getTotal('ampMade_tp')
+    //                 totalMissed = getTotal('ampMissed_tp')
+    //             }
+    //             const accuracy = parseFloat(totalScored / (totalScored + totalMissed)).toFixed(2)
+    //             if (isNaN(accuracy)) displayAccuracy = 'N/A'
+    //             else displayAccuracy = accuracy
+    //             const shade = getShade(type, accuracy)
+    //             return <Box sx={{ backgroundColor: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{displayAccuracy}</Box>
+    //         },
+    //     }
+    // }
+
+    const createAccuracyColumn = (accessorKey, header, extra) => {
+        return {
+            accessorKey, header, aggregationFn: 'accuracy', ...extra, AggregatedCell: ({ cell }) => {
+                const shade = getShade(accessorKey, cell.getValue())
+                return <Box sx={{ background: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{cell.getValue()}</Box>
+            }
         }
     }
 
@@ -92,6 +143,11 @@ export default function TruePage({ data }) {
             ),
         }),
         createSummedColumn('totalGamePieces', 'Total Game Pieces'),
+        createAccuracyColumn('spkrAtnAccuracy', 'Speaker Accuracy Autonomous'),
+        createAccuracyColumn('spkrTpAccuracy', 'Speaker Accuracy Teleoperated'),
+        createAccuracyColumn('ampAtnAccuracy', 'Amp Accuracy Autonomous'),
+        createAccuracyColumn('ampTpAccuracy', 'Amp Accuracy Teleoperated'),
+        createSummedColumn('notesFed', 'Notes Fed'),
         createSummedColumn('spkrMade_atn', 'Speaker Made Autonomous', 150),
         createSummedColumn('spkrMissed_atn', 'Speaker Missed Autonomous', 150),
         createSummedColumn('ampMade_atn', 'Amp Made Autonomous', 150),
@@ -107,10 +163,10 @@ export default function TruePage({ data }) {
         createColumn('traverse', 'Traverse'),
         createColumn('twoRobot', 'Two Robots'),
         createColumn('droppedHit', 'Dropped When Hit'),
-        createColumn('matchNum', 'Match Number', 120),
-        createColumn('startingPos', 'Starting Position', 150),
+        createColumn('matchNum', 'Match Number', { size: 150 }),
+        createColumn('startingPos', 'Starting Position', { size: 150 }),
         createColumn('leaveWing', 'Leave Wing'),
-        createColumn('id', 'id', 60),
+        createColumn('id', 'id', { size: 150 }),
     ], [])
 
     const selectedTeams = Object.keys(rowSelection).filter(row => {
@@ -165,6 +221,58 @@ export default function TruePage({ data }) {
         enableFacetedValues: true,
         enableStickyHeader,
         enableMultiSort: true,
+        aggregationFns: {
+            accuracy: (columnId, leafRows, childRows) => {
+                const teamNum = Number(leafRows[0].original.teamNum)
+                const type = columnId
+                let totalScored = 0
+                let totalMissed = 0
+                const teamData = data.filter(({ teamNum: num }) => {
+                    return num == teamNum
+                })
+                const getTotal = (key) => {
+                    return teamData.map(d => {
+                        return Number(d[key])
+                    }).reduce((total, num) => { return total += num }, 0)
+                }
+                switch (type) {
+                    case 'spkrAtnAccuracy': {
+                        totalScored = getTotal('spkrMade_atn')
+                        totalMissed = getTotal('spkrMissed_atn')
+                        break
+                    }
+
+                    case 'spkrTpAccuracy': {
+                        totalScored = getTotal('spkrMade_tp')
+                        totalMissed = getTotal('spkrMissed_tp')
+                        break
+                    }
+
+                    case 'ampAtnAccuracy': {
+                        totalScored = getTotal('ampMade_atn')
+                        totalMissed = getTotal('ampMissed_atn')
+                        break
+                    }
+
+                    case 'ampTpAccuracy': {
+                        totalScored = getTotal('ampMade_tp')
+                        totalMissed = getTotal('ampMissed_tp')
+                        break
+                    }
+
+                    default: {
+                        return 'N/A'
+                    }
+                }
+
+                const accuracy = totalScored / (totalScored + totalMissed)
+                if (isNaN(accuracy)) {
+                    return 0
+                } else {
+                    return parseFloat(accuracy).toFixed(2)
+                }
+            },
+        },
         initialState: {
             expanded: false,
             pagination: { pageIndex: 0, pageSize: 15 },
