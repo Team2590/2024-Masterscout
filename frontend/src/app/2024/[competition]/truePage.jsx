@@ -44,7 +44,6 @@ export default function TruePage({ data }) {
 
         const max = Math.max(...allAggregated)
         const min = Math.min(...allAggregated)
-        const range = max - min
         const step = max / 4
         if (key.toLowerCase().includes('miss')) {
             if (value == 0) {
@@ -84,7 +83,6 @@ export default function TruePage({ data }) {
                         paddingBlock: 0.5,
                         textAlign: 'center',
                         fontSize: '1rem',
-                        // borderRadius: '0.125rem'
                     }}
                 >
                     {cell.getValue()}
