@@ -29,7 +29,6 @@ export default function Layout({ children }) {
         )
     } else if (teamData.data) {
         const options = getOptions(teamData.data)
-        console.log(options)
         const defaultValue = Array.from(new Set(params.teams))
         return (
             <TabsIndexContext.Provider value={[tabsIndex, setTabsIndex]}>

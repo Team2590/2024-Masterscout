@@ -25,7 +25,6 @@ export default function Layout({ children }) {
         if (data) {
             setOptions(getOptions(data))
         }
-        console.log(params)
     }, [data])
 
     const handleSubmit = (e, value) => {
@@ -45,7 +44,7 @@ export default function Layout({ children }) {
 
     return (
         <TabsIndexContext.Provider value={[tabIndex, setTabIndex]}>
-            <Container sx={{marginBottom: '1rem'}}>
+            <Container sx={{ marginBottom: '1rem' }}>
                 <Autocomplete
                     disablePortal
                     freeSolo
@@ -60,7 +59,7 @@ export default function Layout({ children }) {
                             <TextField {...params} label="Team" variant='standard' />
                         </Box>
                     }
-                    />
+                />
                 <Snackbar
                     open={error}
                     autoHideDuration={6000}
@@ -68,15 +67,15 @@ export default function Layout({ children }) {
                     message="Error, team not in competition"
                     action={
                         <IconButton
-                        size="small"
-                        aria-label="close"
-                        color="inherit"
-                        onClick={() => setError(false)}
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={() => setError(false)}
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
                     }
-                    />
+                />
             </Container>
             {children}
         </TabsIndexContext.Provider>

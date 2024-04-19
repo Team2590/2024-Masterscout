@@ -1,7 +1,7 @@
 'use client'
 import { Box, Button, Tooltip, Checkbox } from '@mui/material'
 import { MRT_TopToolbar, MaterialReactTable, getAllLeafColumnDefs, useMaterialReactTable } from 'material-react-table'
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { download, generateCsv, mkConfig } from 'export-to-csv'
@@ -12,7 +12,21 @@ const createColumn = (accessorKey, header, extra) => {
     return { accessorKey, header, ...extra }
 }
 
-export default function TruePage({ data }) {
+const getAccuracyShade = (value) => {
+    if (value == 0) {
+        return '#3f0000'
+    } else if (value < 0.5) {
+        return '#2e3900'
+    } else if (value < 0.7) {
+        return '#255800'
+    } else if (value < 0.9) {
+        return '#129700'
+    } else {
+        return '#00d600'
+    }
+}
+
+export default function TruePage({ data, averages }) {
     const [rowSelection, setRowSelection] = useState({})
     const [actualData, setActualData] = useState(data)
     const [enableStickyHeader, setStickyHeader] = useState(false)
@@ -72,6 +86,22 @@ export default function TruePage({ data }) {
         }
     }, [data])
 
+    const getAverageShade = useCallback((key, value) => {
+        const max = Math.max(...averages[key])
+        const step = max / 4
+        if (value == 0) {
+            return '#3f0000'
+        } else if (value < step) {
+            return '#2e3900'
+        } else if (value < step * 2) {
+            return '#255800'
+        } else if (value < step * 3) {
+            return '#129700'
+        } else {
+            return '#00d600'
+        }
+    }, [data])
+
     const createSummedColumn = useCallback((accessorKey, header, size, extra) => {
         return {
             accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => {
@@ -91,35 +121,49 @@ export default function TruePage({ data }) {
         }
     }, [actualData])
 
-    const createAccuracyColumn = (accessorKey, header, extra) => {
+    const createAccuracyColumn = useCallback((accessorKey, header, extra) => {
         return {
             accessorKey, header, aggregationFn: 'accuracy', ...extra,
             AggregatedCell: ({ cell }) => {
-                // const shade = getShade(accessorKey, cell.getValue())
+                const shade = getAccuracyShade(cell.getValue())
                 return <Box
-                    // sx={{
-                    //     background: shade,
-                    //     color: 'white',
-                    //     paddingBlock: 0.5,
-                    //     textAlign: 'center',
-                    //     fontSize: '1rem',
-                    //     borderRadius: '0.125rem'
-                    // }}
-                    textAlign='center'
+                    sx={{
+                        background: shade,
+                        color: 'white',
+                        paddingBlock: 0.5,
+                        textAlign: 'center',
+                        fontSize: '1rem',
+                    }}
                 >
                     {cell.getValue()}
                 </Box>
             }
         }
-    }
+    }, [data])
 
-    const createAverageColumn = (accessorKey, header) => {
+    const createAverageColumn = useCallback((accessorKey, header) => {
         return {
-            accessorKey, header, aggregationFn: 'customAverage', AggregatedCell: ({ cell }) => {
-                return <Box textAlign='center'>{cell.getValue()}</Box>
+            accessorKey,
+            header,
+            aggregationFn: 'customAverage',
+            AggregatedCell: ({ cell }) => {
+                const shade = getAverageShade(accessorKey, cell.getValue())
+                return (
+                    <Box
+                        sx={{
+                            background: shade,
+                            color: 'white',
+                            paddingBlock: 0.5,
+                            textAlign: 'center',
+                            fontSize: '1rem',
+                        }}
+                    >
+                        {cell.getValue()}
+                    </Box>
+                )
             }
         }
-    }
+    }, [data])
 
     const columns = useMemo(() => [
         createColumn('teamNum', 'Team Number', {
@@ -147,10 +191,10 @@ export default function TruePage({ data }) {
             }
         }),
         createSummedColumn('totalGamePieces', 'Total Game Pieces'),
-        createAverageColumn('spkrAvg_atn', 'Speaker Avg Autonomous'),
-        createAverageColumn('ampAvg_atn', 'Amp Avg Autonomous'),
-        createAverageColumn('spkrAvg_tp', 'Speaker Avg Teleoperated'),
-        createAverageColumn('ampAvg_tp', 'Amp Avg Teleoperated'),
+        createAverageColumn('spkrAvgAtn', 'Speaker Avg Autonomous'),
+        createAverageColumn('ampAvgAtn', 'Amp Avg Autonomous'),
+        createAverageColumn('spkrAvgTp', 'Speaker Avg Teleoperated'),
+        createAverageColumn('ampAvgTp', 'Amp Avg Teleoperated'),
         createAccuracyColumn('spkrAtnAccuracy', 'Speaker Accuracy Autonomous'),
         createAccuracyColumn('spkrTpAccuracy', 'Speaker Accuracy Teleoperated'),
         createAccuracyColumn('ampAtnAccuracy', 'Amp Accuracy Autonomous'),
@@ -286,13 +330,13 @@ export default function TruePage({ data }) {
                 })
                 const teamData = new TeamDataUtil2024(data)
                 switch (columnId) {
-                    case 'spkrAvg_atn':
+                    case 'spkrAvgAtn':
                         return teamData.getAvgSpeakerAtn()
-                    case 'ampAvg_atn':
+                    case 'ampAvgAtn':
                         return teamData.getAvgAmpAtn()
-                    case 'spkrAvg_tp':
+                    case 'spkrAvgTp':
                         return teamData.getAvgSpeakerTp()
-                    case 'ampAvg_tp':
+                    case 'ampAvgTp':
                         return teamData.getAvgAmpTp()
                 }
             }

@@ -1,6 +1,8 @@
 import React from 'react'
 import TruePage from './truePage'
 import { combine } from '@/util/combine'
+import { filterDataByTeamNum } from '@/util/reduceByTeamNum'
+import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 
 const getData = async (comp) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${comp}/all/raw`, { cache: 'no-cache' })
@@ -29,7 +31,27 @@ export default async function Page({ params }) {
         return { ...d, totalGamePieces, spkrAtnAccuracy, spkrTpAccuracy, ampAtnAccuracy, ampTpAccuracy }
     })
 
+    const teamNums = [...new Set(data.map(({ teamNum }) => {
+        return teamNum
+    }))]
+
+    const averages = {
+        spkrAvgAtn: [],
+        ampAvgAtn: [],
+        spkrAvgTp: [],
+        ampAvgTp: []
+    }
+
+
+    teamNums.forEach(teamNum => {
+        const teamData = new TeamDataUtil2024(filterDataByTeamNum(data, teamNum))
+        averages.spkrAvgAtn.push(teamData.getAvgSpeakerAtn())
+        averages.ampAvgAtn.push(teamData.getAvgAmpAtn())
+        averages.spkrAvgTp.push(teamData.getAvgSpeakerTp())
+        averages.ampAvgTp.push(teamData.getAvgAmpTp())
+    })
+
     return (
-        <TruePage data={data} />
+        <TruePage data={data} averages={averages} />
     )
 }

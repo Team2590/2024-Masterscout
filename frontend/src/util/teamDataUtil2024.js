@@ -16,7 +16,6 @@ export class TeamDataUtil2024 {
     #getAccuracy(location, time) {
         const missed = combine.objPropNums(this.data, `${location}Missed_${time}`)
         const scored = this.#getTotal(`${location}Made_${time}`)
-        console.log(`${location}Made_${time}`)
         const accuracy = parseFloat(scored / (scored + missed)).toFixed(2)
         if (isNaN(accuracy)) {
             return 0
@@ -61,7 +60,7 @@ export class TeamDataUtil2024 {
     }
 
     getAvgSpeakerAtn() {
-        return this.#getAverage('ampMade_tp')
+        return this.#getAverage('spkrMade_atn')
     }
 
     getAvgAmpTp() {
