@@ -1,10 +1,12 @@
 'use client'
 import { Box, Button, Tooltip, Checkbox } from '@mui/material'
-import { MRT_TopToolbar, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
+import { MRT_TopToolbar, MaterialReactTable, getAllLeafColumnDefs, useMaterialReactTable } from 'material-react-table'
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { download, generateCsv, mkConfig } from 'export-to-csv'
+import { combine } from '@/util/combine'
+import { TeamDataUtil2024 } from '@/util/teamDataUtil2024'
 
 const createColumn = (accessorKey, header, extra) => {
     return { accessorKey, header, ...extra }
@@ -43,32 +45,30 @@ export default function TruePage({ data }) {
         const max = Math.max(...allAggregated)
         const min = Math.min(...allAggregated)
         const range = max - min
-        // if (max == 0) return
         const step = max / 4
-        if (key == 'spkrAtnAccuracy') console.log(step)
         if (key.toLowerCase().includes('miss')) {
             if (value == 0) {
-                return 'hsl(147, 100%, 40%)'
+                return '#00d600'
             } else if (value < step) {
-                return 'hsl(147, 100%, 30%)'
+                return '#129700'
             } else if (value < step * 2) {
-                return 'hsl(147, 100%, 20%)'
+                return '#255800'
             } else if (value < step * 3) {
-                return 'hsl(147, 100%, 10%)'
+                return '#2e3900'
             } else {
-                return 'hsl(5, 90%, 40%)'
+                return '#3f0000'
             }
         } else {
             if (value == 0) {
-                return 'hsl(5, 90%, 35%)'
+                return '#3f0000'
             } else if (value < step) {
-                return 'hsl(147, 100%, 15%)'
+                return '#2e3900'
             } else if (value < step * 2) {
-                return 'hsl(147, 100%, 20%)'
+                return '#255800'
             } else if (value < step * 3) {
-                return 'hsl(147, 90%, 30%)'
+                return '#129700'
             } else {
-                return 'hsl(147, 87.5%, 40%)'
+                return '#00d600'
             }
         }
     }, [data])
@@ -77,62 +77,54 @@ export default function TruePage({ data }) {
         return {
             accessorKey, header, size, ...extra, aggregationFn: 'sum', AggregatedCell: ({ cell }) => {
                 const shade = getShade(accessorKey, cell.getValue())
-                return <Box sx={{ background: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{cell.getValue()}</Box>
+                return <Box
+                    sx={{
+                        background: shade,
+                        color: 'white',
+                        paddingBlock: 0.5,
+                        textAlign: 'center',
+                        fontSize: '1rem',
+                        // borderRadius: '0.125rem'
+                    }}
+                >
+                    {cell.getValue()}
+                </Box>
             },
         }
     }, [actualData])
 
-    // const createAccuracyColumn = (accessorKey, header) => {
-    //     return {
-    //         accessorKey,
-    //         header,
-    //         AggregatedCell: ({ row, cell }) => {
-    //             const type = cell.column.id
-    //             const teamNum = row.original.teamNum
-    //             const teamData = data.filter(({ teamNum: num }) => {
-    //                 return num == teamNum
-    //             })
-    //             const getTotal = (key) => {
-    //                 return teamData.map(d => {
-    //                     return Number(d[key])
-    //                 }).reduce((total, num) => { return total += num }, 0)
-    //             }
-    //             let displayAccuracy
-    //             let totalScored
-    //             let totalMissed
-    //             if (type == 'spkrAtnAccuracy') {
-    //                 totalScored = getTotal('spkrMade_atn')
-    //                 totalMissed = getTotal('spkrMissed_atn')
-    //             } else if (type == 'spkrTpAccuracy') {
-    //                 totalScored = getTotal('spkrMade_tp')
-    //                 totalMissed = getTotal('spkrMissed_tp')
-    //             } else if (type == 'ampAtnAccuracy') {
-    //                 totalScored = getTotal('ampMade_atn')
-    //                 totalMissed = getTotal('ampMissed_atn')
-    //             } else if (type == 'ampTpAccuracy') {
-    //                 totalScored = getTotal('ampMade_tp')
-    //                 totalMissed = getTotal('ampMissed_tp')
-    //             }
-    //             const accuracy = parseFloat(totalScored / (totalScored + totalMissed)).toFixed(2)
-    //             if (isNaN(accuracy)) displayAccuracy = 'N/A'
-    //             else displayAccuracy = accuracy
-    //             const shade = getShade(type, accuracy)
-    //             return <Box sx={{ backgroundColor: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{displayAccuracy}</Box>
-    //         },
-    //     }
-    // }
-
     const createAccuracyColumn = (accessorKey, header, extra) => {
         return {
-            accessorKey, header, aggregationFn: 'accuracy', ...extra, AggregatedCell: ({ cell }) => {
-                const shade = getShade(accessorKey, cell.getValue())
-                return <Box sx={{ background: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{cell.getValue()}</Box>
+            accessorKey, header, aggregationFn: 'accuracy', ...extra,
+            AggregatedCell: ({ cell }) => {
+                // const shade = getShade(accessorKey, cell.getValue())
+                return <Box
+                    // sx={{
+                    //     background: shade,
+                    //     color: 'white',
+                    //     paddingBlock: 0.5,
+                    //     textAlign: 'center',
+                    //     fontSize: '1rem',
+                    //     borderRadius: '0.125rem'
+                    // }}
+                    textAlign='center'
+                >
+                    {cell.getValue()}
+                </Box>
+            }
+        }
+    }
+
+    const createAverageColumn = (accessorKey, header) => {
+        return {
+            accessorKey, header, aggregationFn: 'customAverage', AggregatedCell: ({ cell }) => {
+                return <Box textAlign='center'>{cell.getValue()}</Box>
             }
         }
     }
 
     const columns = useMemo(() => [
-        createColumn('teamNum', 'Team Number', 80, {
+        createColumn('teamNum', 'Team Number', {
             Cell: ({ cell }) => (
                 <Link
                     href={`/2024/${params.competition}/teams/${cell.getValue()}`}
@@ -141,8 +133,26 @@ export default function TruePage({ data }) {
                     {cell.getValue()}
                 </Link>
             ),
+            GroupedCell: ({ cell }) => {
+                const teamNum = cell.getValue()
+                const entries = data.filter(d => {
+                    return Number(teamNum) == d.teamNum
+                }).length
+                return (
+                    <Link
+                        href={`/2024/${params.competition}/teams/${cell.getValue()}`}
+                        style={{ textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'center' }}
+                    >
+                        {teamNum} ({entries})
+                    </Link>
+                )
+            }
         }),
         createSummedColumn('totalGamePieces', 'Total Game Pieces'),
+        createAverageColumn('spkrAvg_atn', 'Speaker Avg Autonomous'),
+        createAverageColumn('ampAvg_atn', 'Amp Avg Autonomous'),
+        createAverageColumn('spkrAvg_tp', 'Speaker Avg Teleoperated'),
+        createAverageColumn('ampAvg_tp', 'Amp Avg Teleoperated'),
         createAccuracyColumn('spkrAtnAccuracy', 'Speaker Accuracy Autonomous'),
         createAccuracyColumn('spkrTpAccuracy', 'Speaker Accuracy Teleoperated'),
         createAccuracyColumn('ampAtnAccuracy', 'Amp Accuracy Autonomous'),
@@ -272,10 +282,26 @@ export default function TruePage({ data }) {
                     return parseFloat(accuracy).toFixed(2)
                 }
             },
+            customAverage: (columnId, leafRows, childRows) => {
+                const data = leafRows.map(({ original }) => {
+                    return original
+                })
+                const teamData = new TeamDataUtil2024(data)
+                switch (columnId) {
+                    case 'spkrAvg_atn':
+                        return teamData.getAvgSpeakerAtn()
+                    case 'ampAvg_atn':
+                        return teamData.getAvgAmpAtn()
+                    case 'spkrAvg_tp':
+                        return teamData.getAvgSpeakerTp()
+                    case 'ampAvg_tp':
+                        return teamData.getAvgAmpTp()
+                }
+            }
         },
         initialState: {
             expanded: false,
-            pagination: { pageIndex: 0, pageSize: 15 },
+            pagination: { pageIndex: 0, pageSize: 100 },
             grouping: ['teamNum'],
             sorting: [
                 {
@@ -331,7 +357,27 @@ export default function TruePage({ data }) {
                     </div>
                 </div>
             )
-        }
+        },
+        muiTableProps: {
+            sx: {
+                border: '1px solid rgba(81, 81, 81, .5)',
+                caption: {
+                    captionSide: 'top',
+                },
+            },
+        },
+        muiTableHeadCellProps: {
+            sx: {
+                border: '1px solid rgba(81, 81, 81, .5)',
+                fontWeight: 'normal',
+            },
+        },
+        muiTableBodyCellProps: {
+            sx: {
+                border: '1px solid rgba(81, 81, 81, .5)',
+                padding: 0,
+            },
+        },
     })
 
     return (

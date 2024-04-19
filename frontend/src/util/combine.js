@@ -15,5 +15,9 @@ export const combine = {
         return arr.map(obj => {
             return obj[prop]
         })
+    },
+
+    total: (arr) => {
+        return arr.reduce((a, b) => { return a + b }, 0)
     }
 }

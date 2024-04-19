@@ -1,0 +1,39 @@
+// const createAccuracyColumn = (accessorKey, header) => {
+//     return {
+//         accessorKey,
+//         header,
+//         AggregatedCell: ({ row, cell }) => {
+//             const type = cell.column.id
+//             const teamNum = row.original.teamNum
+//             const teamData = data.filter(({ teamNum: num }) => {
+//                 return num == teamNum
+//             })
+//             const getTotal = (key) => {
+//                 return teamData.map(d => {
+//                     return Number(d[key])
+//                 }).reduce((total, num) => { return total += num }, 0)
+//             }
+//             let displayAccuracy
+//             let totalScored
+//             let totalMissed
+//             if (type == 'spkrAtnAccuracy') {
+//                 totalScored = getTotal('spkrMade_atn')
+//                 totalMissed = getTotal('spkrMissed_atn')
+//             } else if (type == 'spkrTpAccuracy') {
+//                 totalScored = getTotal('spkrMade_tp')
+//                 totalMissed = getTotal('spkrMissed_tp')
+//             } else if (type == 'ampAtnAccuracy') {
+//                 totalScored = getTotal('ampMade_atn')
+//                 totalMissed = getTotal('ampMissed_atn')
+//             } else if (type == 'ampTpAccuracy') {
+//                 totalScored = getTotal('ampMade_tp')
+//                 totalMissed = getTotal('ampMissed_tp')
+//             }
+//             const accuracy = parseFloat(totalScored / (totalScored + totalMissed)).toFixed(2)
+//             if (isNaN(accuracy)) displayAccuracy = 'N/A'
+//             else displayAccuracy = accuracy
+//             const shade = getShade(type, accuracy)
+//             return <Box sx={{ backgroundColor: shade, color: 'white', paddingBlock: 0.5, textAlign: 'center', fontSize: '1rem', borderRadius: '0.125rem' }}>{displayAccuracy}</Box>
+//         },
+//     }
+// }
