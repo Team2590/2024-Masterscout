@@ -75,6 +75,10 @@ export class TeamDataUtil2024 {
         return this.#getAverage('trap')
     }
 
+    getAvgFed() {
+        return this.#getAverage('notesFed')
+    }
+
     getTotalAmpAtn() {
         return this.#getTotal('ampMade_atn')
     }

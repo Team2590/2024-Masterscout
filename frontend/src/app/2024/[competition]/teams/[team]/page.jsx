@@ -30,6 +30,7 @@ export default function Page({ params }) {
                             <p style={{ fontSize: '1.25rem' }}>Total Game Pieces: {teamData.getTotalGamePieces()}</p>
                             <p style={{ fontSize: '1.25rem', marginTop: 0 }}>Can Climb: {teamData.canClimb() ? 'Yes' : 'No'}</p>
                             <p style={{ fontSize: '1.25rem', marginTop: 0 }}>Notes Fed: {teamData.getTotalFed()}</p>
+                            <p style={{ fontSize: '1.25rem', marginTop: 0 }}>Average Fed: {teamData.getAvgFed()}</p>
                             {/* <img src='https://placehold.co/400x400' style={{
                                 borderRadius: '0.25rem',
                                 height: '400',

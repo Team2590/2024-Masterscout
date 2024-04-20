@@ -39,7 +39,8 @@ export default async function Page({ params }) {
         spkrAvgAtn: [],
         ampAvgAtn: [],
         spkrAvgTp: [],
-        ampAvgTp: []
+        ampAvgTp: [],
+        avgFed: []
     }
 
 
@@ -49,6 +50,7 @@ export default async function Page({ params }) {
         averages.ampAvgAtn.push(teamData.getAvgAmpAtn())
         averages.spkrAvgTp.push(teamData.getAvgSpeakerTp())
         averages.ampAvgTp.push(teamData.getAvgAmpTp())
+        averages.avgFed.push(teamData.getAvgFed())
     })
 
     return (

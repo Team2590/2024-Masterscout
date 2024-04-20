@@ -191,6 +191,7 @@ export default function TruePage({ data, averages }) {
             }
         }),
         createSummedColumn('totalGamePieces', 'Total Game Pieces'),
+        createAverageColumn('avgFed', 'Avg Notes Fed'),
         createAverageColumn('spkrAvgAtn', 'Speaker Avg Autonomous'),
         createAverageColumn('ampAvgAtn', 'Amp Avg Autonomous'),
         createAverageColumn('spkrAvgTp', 'Speaker Avg Teleoperated'),
@@ -338,6 +339,8 @@ export default function TruePage({ data, averages }) {
                         return teamData.getAvgSpeakerTp()
                     case 'ampAvgTp':
                         return teamData.getAvgAmpTp()
+                    case 'avgFed':
+                        return teamData.getAvgFed()
                 }
             }
         },
