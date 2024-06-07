@@ -36,10 +36,10 @@ export default function TruePage({ rawData, data }) {
         }
     }
 
-    const createColumn = (accessorKey, header, extra) => {
+    const createColumn = (accessorKey, header, filterFn, filterVariant, extra) => {
         const max = maxBy(data, d => d[accessorKey])[accessorKey]
         return {
-            accessorKey, header, size: 100, ...extra,
+            accessorKey, header, size: 100, filterFn, filterVariant, ...extra,
             Cell: ({ renderedCellValue, row }) => {
                 let percent = data.filter(({ teamNum }) => teamNum == row.original.teamNum)[0][accessorKey] / max
                 if (accessorKey.includes('Missed')) percent = 1 / percent
@@ -126,6 +126,7 @@ export default function TruePage({ rawData, data }) {
         positionToolbarAlertBanner: 'none',
         enableGrouping: true,
         enableColumnPinning: true,
+        enableColumnFilterModes: true,
         enableStickyHeader,
         enableMultiSort: true,
         initialState: {
