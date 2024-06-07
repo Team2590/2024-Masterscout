@@ -25,7 +25,7 @@ export default function TruePage({ rawData, data }) {
         filename: `${params.competition} export`
     })
 
-    const handleExportData = () => {
+    const handleExportData = (data) => {
         const csv = generateCsv(csvConfig)(data)
         download(csvConfig)(csv)
     }
@@ -148,12 +148,20 @@ export default function TruePage({ rawData, data }) {
                 <div style={{ margin: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                         <Button
-                            onClick={() => handleExportData(table.getSelectedRowModel().rows)}
+                            onClick={() => handleExportData(rawData)}
                             color='inherit'
                             variant='contained'
                             sx={{ marginLeft: '0.5rem' }}
                         >
-                            Download CSV
+                            Download Raw CSV
+                        </Button>
+                        <Button
+                            onClick={() => handleExportData(data)}
+                            color='inherit'
+                            variant='contained'
+                            sx={{ marginLeft: '1.5rem' }}
+                        >
+                            Download Aggregate CSV
                         </Button>
                         <Button
                             aria-label='compare'
