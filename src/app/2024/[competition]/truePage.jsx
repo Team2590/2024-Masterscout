@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Tooltip, Checkbox } from '@mui/material'
+import { Box, Button, Tooltip, Checkbox, Menu, MenuItem } from '@mui/material'
 import { MRT_TopToolbar, MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import React, { useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
@@ -17,6 +17,10 @@ export default function TruePage({ rawData, data }) {
     const [enableStickyHeader, setStickyHeader] = useState(false)
     const router = useRouter()
     const params = useParams()
+
+    const [anchorEl, setAnchorEl] = useState(null)
+    const open = Boolean(anchorEl)
+    const handleClose = () => setAnchorEl(null)
 
     const csvConfig = mkConfig({
         fieldSeparator: ',',
@@ -148,21 +152,21 @@ export default function TruePage({ rawData, data }) {
                 <div style={{ margin: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                         <Button
-                            onClick={() => handleExportData(rawData)}
+                            onClick={(e) => setAnchorEl(e.currentTarget)}
                             color='inherit'
                             variant='contained'
                             sx={{ marginLeft: '0.5rem' }}
                         >
-                            Download Raw CSV
+                            Download
                         </Button>
-                        <Button
-                            onClick={() => handleExportData(data)}
-                            color='inherit'
-                            variant='contained'
-                            sx={{ marginLeft: '1.5rem' }}
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
                         >
-                            Download Aggregate CSV
-                        </Button>
+                            <MenuItem onClick={() => handleExportData(rawData)}>Raw</MenuItem>
+                            <MenuItem onClick={() => handleExportData(data)}>Aggregate</MenuItem>
+                        </Menu>
                         <Button
                             aria-label='compare'
                             variant='contained'
