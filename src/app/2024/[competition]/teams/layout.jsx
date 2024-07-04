@@ -3,7 +3,7 @@ import { Autocomplete, Container, TextField, Snackbar, IconButton, Box } from '@
 import CloseIcon from '@mui/icons-material/Close'
 import { Search } from '@mui/icons-material'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useLayoutEffect, useState, createContext } from 'react'
+import React, { useLayoutEffect, useState, createContext, useEffect } from 'react'
 import Loading from '@/app/loading'
 import useSWR from 'swr'
 import { fetcher } from '@/util/fetchers'
@@ -18,7 +18,7 @@ export default function Layout({ children }) {
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
     const [options, setOptions] = useState([])
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
+    const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/raw`, fetcher)
     const [tabIndex, setTabIndex] = useState(0)
 
     useLayoutEffect(() => {

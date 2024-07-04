@@ -13,14 +13,14 @@ export default function Home() {
             <div style={{ marginInline: 'auto', marginTop: '2rem' }}>
                 <Stack sx={{ marginInline: 'auto', textAlign: 'center' }}>
                     <h1>Competitions</h1>
-                    {data.map(({ Tables_in_Nemesis2590 }, index) => {
+                    {data.map((comp, index) => {
                         return (
                             <div key={index} style={{ marginBottom: '1rem' }}>
                                 <Link
-                                    href={`/2024/${Tables_in_Nemesis2590}`}
+                                    href={`/2024/${comp}`}
                                     style={{ textDecoration: 'none', color: 'inherit', fontSize: '1.75rem' }}
                                 >
-                                    {decodeURI(Tables_in_Nemesis2590)}
+                                    {comp}
                                 </Link>
                             </div>
                         )

@@ -1,14 +1,11 @@
-import { connectionConfig } from '@/util/connection'
-import mysql from 'mysql2/promise'
+import { db } from '@/firebase/firebase'
+import { collection, getDocs } from 'firebase/firestore'
 
 export async function GET() {
-    try {
-        const connection = await mysql.createConnection(connectionConfig)
-        const [result] = await connection.query('SHOW tables')
-        await connection.end()
-        return Response.json(result)
-    } catch (e) {
-        return Response.error()
-    }
-
+    const competitions = []
+    const docs = await getDocs(collection(db, 'competitions'))
+    docs.forEach(({ id }) => {
+        competitions.push(id)
+    })
+    return Response.json(competitions)
 }

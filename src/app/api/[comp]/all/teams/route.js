@@ -1,13 +1,12 @@
-import { connectionConfig } from '@/util/connection'
-import mysql from 'mysql2/promise'
+import { db } from '@/firebase/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 
 export async function GET(req, { params: { comp } }) {
-    try {
-        const connection = await mysql.createConnection(connectionConfig)
-        const [result] = await connection.query('SELECT DISTINCT teamNum FROM ?? ORDER BY teamNum ASC;', [comp])
-        await connection.end()
-        return Response.json(result)
-    } catch (e) {
-        return Response.error()
-    }
+    const docRef = doc(db, 'competitions', comp)
+    const docSnap = await getDoc(docRef)
+    return Response.json(
+        JSON.parse(docSnap.data().competitionData).map(({ teamNum }) => {
+            return teamNum
+        })
+    )
 }

@@ -1,13 +1,11 @@
-import { connectionConfig } from '@/util/connection'
-import mysql from 'mysql2/promise'
+// import { connectionConfig } from '@/util/connection'
+// import mysql from 'mysql2/promise'
+
+import { db } from '@/firebase/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 
 export async function GET(req, { params: { comp, teamNum } }) {
-    try {
-        const connection = await mysql.createConnection(connectionConfig)
-        const [result] = await connection.query('SELECT  * FROM ?? WHERE teamNum = ?;', [comp, teamNum])
-        await connection.end()
-        return Response.json(result)
-    } catch (e) {
-        return Response.error()
-    }
+    const docRef = doc(db, 'competitions', comp)
+    const docSnap = await getDoc(docRef)
+    return Response.json(JSON.parse(docSnap.data().competitionData).filter(d => d.teamNum == teamNum))
 }

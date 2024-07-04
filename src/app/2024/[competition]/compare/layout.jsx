@@ -4,7 +4,7 @@ import { getOptions } from '@/util/getOptions'
 import { Search } from '@mui/icons-material'
 import { Box, CircularProgress, Autocomplete, TextField, Container } from '@mui/material'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useState, createContext, useEffect } from 'react'
+import React, { useState, createContext, useLayoutEffect } from 'react'
 import useSWR from 'swr'
 
 export const TabsIndexContext = createContext(0)
@@ -12,19 +12,25 @@ export const TabsIndexContext = createContext(0)
 export default function Layout({ children }) {
     const params = useParams()
     const router = useRouter()
-    const teamData = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/teams`, fetcher)
+    const teamData = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${params.competition}/all/raw`, fetcher)
     const [tabsIndex, setTabsIndex] = useState(0)
     const [selected, setSelected] = useState([])
 
     const handleSubmit = (e, value) => {
         e.preventDefault()
         const options = getOptions(teamData.data)
+        console.log('options', options)
+        console.log('values', value)
         const filtered = value.filter(val => {
-            return options.includes(Number(val))
+            return options.includes(val)
         })
         setSelected(filtered)
         router.push(`/2024/${params.competition}/compare/${filtered.join('/')}`)
     }
+
+    useLayoutEffect(() => {
+        if (selected.length == 0 && params.teams) setSelected(params.teams)
+    }, [])
 
     if (teamData.isLoading) {
         return (
@@ -45,7 +51,6 @@ export default function Layout({ children }) {
                         value={selected}
                         sx={{ maxWidth: 600, marginTop: '2rem', marginInline: 'auto' }}
                         onChange={handleSubmit}
-                        defaultValue={defaultValue}
                         freeSolo
                         renderInput={(params) =>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
