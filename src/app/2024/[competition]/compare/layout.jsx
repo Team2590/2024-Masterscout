@@ -22,9 +22,9 @@ export default function Layout({ children }) {
         console.log('options', options)
         console.log('values', value)
         const filtered = value.filter(val => {
-            return options.includes(val)
+            return options.includes(Number(val))
         })
-        setSelected(filtered)
+        setSelected(value)
         router.push(`/2024/${params.competition}/compare/${filtered.join('/')}`)
     }
 
