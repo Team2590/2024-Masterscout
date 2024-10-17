@@ -4,7 +4,7 @@ import TrueLayout from './trueLayout'
 import { notFound } from 'next/navigation'
 
 const checkComp = async (comp) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${comp}/all/teams`, { method: 'GET' }).catch(e => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/${comp}/all/teams`, { method: 'GET', cache: 'no-cache' }).catch(e => {
         notFound()
     })
     if (!response.ok) {
