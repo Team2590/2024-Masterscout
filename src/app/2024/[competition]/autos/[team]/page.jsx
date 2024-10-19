@@ -36,7 +36,7 @@ export default function Page({ params }) {
                                 <TableHead>
                                     <TableRow>
                                         {keys.map(key => {
-                                            return <TableCell key={key}>{key}</TableCell>
+                                            return <TableCell key={key} sx={{ textAlign: 'center' }}>{key}</TableCell>
                                         })}
                                     </TableRow>
                                 </TableHead>
@@ -46,31 +46,25 @@ export default function Page({ params }) {
                                         return (
                                             <TableRow key={d.id}>
                                                 {filtered.map((value, index) => {
-                                                    return <TableCell key={index}>{value}</TableCell>
+                                                    return <TableCell key={index} sx={{ textAlign: 'center' }}>{value}</TableCell>
                                                 })}
                                             </TableRow>
                                         )
                                     })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TableContainer sx={{ maxWidth: '90vw', marginInline: 'auto', marginTop: '1rem' }} component={Paper}>
-                            <Table>
-                                <TableHead>
                                     <TableRow>
                                         {keys.map(key => {
-                                            return <TableCell key={key}>Accuracy</TableCell>
+                                            return <TableCell key={key} sx={{ fontWeight: 'bold', textAlign: 'center' }}>Accuracy</TableCell>
                                         })}
                                     </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {keys.map(key => {
-                                        const accuracy = getAccuracy(key)
-                                        const shade = getShade(accuracy)
-                                        return (
-                                            <TableCell sx={{ bgcolor: shade }} key={key}>{accuracy * 100}%</TableCell>
-                                        )
-                                    })}
+                                    <TableRow>
+                                        {keys.map(key => {
+                                            const accuracy = getAccuracy(key)
+                                            const shade = getShade(accuracy)
+                                            return (
+                                                <TableCell sx={{ bgcolor: shade, textAlign: 'center' }} key={key}>{accuracy * 100}%</TableCell>
+                                            )
+                                        })}
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </TableContainer>
