@@ -1,9 +1,9 @@
 'use client'
-import { AppBar, Box, Drawer, IconButton, List, ListItem, ListItemButton, Toolbar, Tooltip } from '@mui/material'
+import { AppBar, Box, Drawer, IconButton, List, ListItemButton, Toolbar, Tooltip } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { red } from '@mui/material/colors'
 import Link from 'next/link'
-import React, { Suspense, useState } from 'react'
+import { Suspense, useState } from 'react'
 import Loading from '@/app/loading'
 
 export default function TrueLayout({ children, params }) {
@@ -12,7 +12,8 @@ export default function TrueLayout({ children, params }) {
     const redirects = {
         compare: `/2024/${params.competition}/compare`,
         ranking: `/2024/${params.competition}`,
-        teams: `/2024/${params.competition}/teams`
+        teams: `/2024/${params.competition}/teams`,
+        autos: `/2024/${params.competition}/autos`,
     }
 
     return (
@@ -54,6 +55,9 @@ export default function TrueLayout({ children, params }) {
                         </ListItemButton>
                         <ListItemButton sx={{ p: 3 }} role='link' component={Link} href={redirects.teams}>
                             Teams
+                        </ListItemButton>
+                        <ListItemButton sx={{ p: 3 }} role='link' component={Link} href={redirects.autos}>
+                            Autos
                         </ListItemButton>
                     </List>
                 </Box>

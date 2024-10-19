@@ -1,6 +1,8 @@
 import { db } from '@/firebase/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
     const competitions = []
     const docs = await getDocs(collection(db, 'competitions'))

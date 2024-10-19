@@ -223,6 +223,11 @@ export class TeamDataUtil2024 {
         return this.#getScores('spkrMade_tp')
     }
 
+
+    getFed() {
+        return this.#getScores('notesFed')
+    }
+
     getAllAmpScores() {
         return this.getAmpAutoScores().map((val, i) => {
             return val += this.getAmpTeleopScores()[i]

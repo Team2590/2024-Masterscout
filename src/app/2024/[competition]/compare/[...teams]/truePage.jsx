@@ -319,6 +319,19 @@ export default function TruePage({ teamsData }) {
                                     />
                                 </>
                             )}
+                            {graph == graphs.NOTES_FED && (
+                                <>
+                                    <Typography variant='h5' textAlign='center'>Notes Fed</Typography>
+                                    <LineChart
+                                        xAxis={[{ scaleType: 'band', data: getMaxMatchesAsArray(), label: 'Game Played' }]}
+                                        series={teamsDataUtil.map(teamData => {
+                                            return { data: teamData.getFed(), label: String(teamData.data[0].teamNum) }
+                                        })}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </>
+                            )}
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                             <FormControl sx={{ width: 200 }}>

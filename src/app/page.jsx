@@ -1,14 +1,13 @@
 'use client'
-import Image from "next/image"
 import { Stack } from "@mui/material"
 import useSWR from "swr"
 import { fetcher } from "../util/fetchers"
 import Link from "next/link"
 
 export default function Home() {
-    const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/comp`, fetcher)
+    const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL_2024}/api/comp`, (url) => fetch(url, { cache: 'no-cache' }).then(res => res.json()))
 
-    if (data) {
+    if (!isLoading && data) {
         return (
             <div style={{ marginInline: 'auto', marginTop: '2rem' }}>
                 <Stack sx={{ marginInline: 'auto', textAlign: 'center' }}>

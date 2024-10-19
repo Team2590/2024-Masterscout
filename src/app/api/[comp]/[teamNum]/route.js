@@ -1,6 +1,3 @@
-// import { connectionConfig } from '@/util/connection'
-// import mysql from 'mysql2/promise'
-
 import { db } from '@/firebase/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 

@@ -249,6 +249,17 @@ export default function Page({ params }) {
                                     />
                                 </>
                             )}
+                            {graph == graphs.NOTES_FED && (
+                                <>
+                                    <Typography variant='h5' textAlign='center'>Notes Fed</Typography>
+                                    <LineChart
+                                        xAxis={[{ scaleType: 'band', data: teamData.getMatchNums() }]}
+                                        series={[{ data: teamData.getFed() }]}
+                                        width={500}
+                                        height={300}
+                                    />
+                                </>
+                            )}
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                             <FormControl sx={{ width: 200 }}>

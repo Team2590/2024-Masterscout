@@ -5,5 +5,6 @@ export const graphs = {
     SPKR_AUTO_PER_GAME: 'Speaker Auto Scores per Game',
     SPKR_TP_PER_GAME: 'Speaker Teleoperated Scores per Game',
     TOTAL_AMP_PER_GAME: 'Total Amp Scores per Game',
-    TOTAL_SPKR_PER_GAME: 'Total Speaker Scores per Game'
+    TOTAL_SPKR_PER_GAME: 'Total Speaker Scores per Game',
+    NOTES_FED: 'Notes Fed/Fling'
 }
